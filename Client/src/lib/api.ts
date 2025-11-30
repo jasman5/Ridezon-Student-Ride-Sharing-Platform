@@ -89,6 +89,9 @@ interface BackendRide {
 	creator?: BackendUser;
 	passengers?: BackendPassenger[];
 	requests?: BackendRequest[];
+	group?: {
+		id: string;
+	};
 	// Add other fields if necessary
 }
 
@@ -147,6 +150,7 @@ const mapRideToPool = (ride: BackendRide): Pool => {
 		creatorId: ride.creatorId,
 		creator: ride.creator,
 		passengers: ride.passengers,
+		group: ride.group,
 		// requests is already mapped above but with different structure?
 		// The Pool interface has requests as { id, status, userId, user: { fullName, avatar, email } }
 		// BackendRequest has user: BackendUser.
