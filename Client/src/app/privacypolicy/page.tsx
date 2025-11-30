@@ -2,7 +2,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { siteConfig } from "@/lib/config";
+import { projectConfig } from "@/lib/config";
 import { Shield, Mail, MapPin, Calendar, Camera, IdCard } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useState, useEffect } from "react";
@@ -19,9 +19,8 @@ export default function PrivacyPolicy() {
 
 	return (
 		<div
-			className={`min-h-screen transition-colors duration-300 ${
-				isDark ? "bg-black text-white" : "bg-white text-gray-900"
-			}`}
+			className={`min-h-screen transition-colors duration-300 ${isDark ? "bg-black text-white" : "bg-white text-gray-900"
+				}`}
 		>
 			{/* Main Content */}
 			<main className="container mx-auto px-4 py-12 max-w-4xl">
@@ -29,15 +28,13 @@ export default function PrivacyPolicy() {
 				<div className="text-center mb-12">
 					<div className="flex items-center justify-center mb-4">
 						<Shield
-							className={`h-12 w-12 ${
-								isDark ? "text-red-400" : "text-red-600"
-							}`}
+							className={`h-12 w-12 ${isDark ? "text-red-400" : "text-red-600"
+								}`}
 						/>
 					</div>
 					<h1
-						className={`text-4xl md:text-5xl font-bold mb-4 ${
-							isDark ? "text-white" : "text-gray-900"
-						}`}
+						className={`text-4xl md:text-5xl font-bold mb-4 ${isDark ? "text-white" : "text-gray-900"
+							}`}
 					>
 						Privacy{" "}
 						<span className={isDark ? "text-red-400" : "text-red-600"}>
@@ -45,9 +42,8 @@ export default function PrivacyPolicy() {
 						</span>
 					</h1>
 					<p
-						className={`text-lg max-w-2xl mx-auto ${
-							isDark ? "text-gray-300" : "text-gray-600"
-						}`}
+						className={`text-lg max-w-2xl mx-auto ${isDark ? "text-gray-300" : "text-gray-600"
+							}`}
 					>
 						Your privacy matters to us. Learn how we collect, use, and
 						protect your personal information.
@@ -56,24 +52,21 @@ export default function PrivacyPolicy() {
 
 				{/* Effective Date */}
 				<Card
-					className={`mb-8 transition-colors duration-300 ${
-						isDark
-							? "border-red-800 bg-red-950/20"
-							: "border-red-100 bg-red-50/50"
-					}`}
+					className={`mb-8 transition-colors duration-300 ${isDark
+						? "border-red-800 bg-red-950/20"
+						: "border-red-100 bg-red-50/50"
+						}`}
 				>
 					<CardContent className="p-6">
 						<div className="flex items-center space-x-3">
 							<Calendar
-								className={`h-5 w-5 ${
-									isDark ? "text-red-400" : "text-red-600"
-								}`}
+								className={`h-5 w-5 ${isDark ? "text-red-400" : "text-red-600"
+									}`}
 							/>
 							<div>
 								<p
-									className={`font-semibold ${
-										isDark ? "text-white" : "text-gray-900"
-									}`}
+									className={`font-semibold ${isDark ? "text-white" : "text-gray-900"
+										}`}
 								>
 									Effective Date
 								</p>
@@ -94,27 +87,24 @@ export default function PrivacyPolicy() {
 					{/* Introduction */}
 					<section>
 						<h2
-							className={`text-2xl font-bold mb-4 border-l-4 pl-4 ${
-								isDark
-									? "text-white border-red-400"
-									: "text-gray-900 border-red-600"
-							}`}
+							className={`text-2xl font-bold mb-4 border-l-4 pl-4 ${isDark
+								? "text-white border-red-400"
+								: "text-gray-900 border-red-600"
+								}`}
 						>
 							Introduction
 						</h2>
 						<div
-							className={`prose prose-lg max-w-none leading-relaxed ${
-								isDark ? "text-gray-300" : "text-gray-700"
-							}`}
+							className={`prose prose-lg max-w-none leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"
+								}`}
 						>
 							<p>
 								Welcome to{" "}
 								<strong
-									className={`cursor-default transition-colors duration-200 ${
-										isDark
-											? "text-red-400 hover:text-red-300"
-											: "text-red-600 hover:text-red-700"
-									} hover:underline`}
+									className={`cursor-default transition-colors duration-200 ${isDark
+										? "text-red-400 hover:text-red-300"
+										: "text-red-600 hover:text-red-700"
+										} hover:underline`}
 								>
 									thapargo.com
 								</strong>
@@ -134,55 +124,48 @@ export default function PrivacyPolicy() {
 					{/* Information We Collect */}
 					<section>
 						<h2
-							className={`text-2xl font-bold mb-6 border-l-4 pl-4 ${
-								isDark
-									? "text-white border-red-400"
-									: "text-gray-900 border-red-600"
-							}`}
+							className={`text-2xl font-bold mb-6 border-l-4 pl-4 ${isDark
+								? "text-white border-red-400"
+								: "text-gray-900 border-red-600"
+								}`}
 						>
 							Information We Collect
 						</h2>
 						<p
-							className={`mb-6 leading-relaxed ${
-								isDark ? "text-gray-300" : "text-gray-700"
-							}`}
+							className={`mb-6 leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"
+								}`}
 						>
 							When you use our Website and Google OAuth to sign in, we
 							collect the following information:
 						</p>
 						<div className="grid md:grid-cols-3 gap-6">
 							<Card
-								className={`transition-all duration-300 hover:scale-105 ${
-									isDark
-										? "border-gray-700 hover:border-red-700 bg-gray-800/50"
-										: "border-gray-200 hover:border-red-200 bg-white"
-								}`}
+								className={`transition-all duration-300 hover:scale-105 ${isDark
+									? "border-gray-700 hover:border-red-700 bg-gray-800/50"
+									: "border-gray-200 hover:border-red-200 bg-white"
+									}`}
 							>
 								<CardContent className="p-6">
 									<div
-										className={`mb-3 ${
-											isDark ? "text-red-400" : "text-red-600"
-										}`}
+										className={`mb-3 ${isDark ? "text-red-400" : "text-red-600"
+											}`}
 									>
 										<div
-											className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-												isDark ? "bg-red-900/30" : "bg-red-100"
-											}`}
+											className={`w-10 h-10 rounded-lg flex items-center justify-center ${isDark ? "bg-red-900/30" : "bg-red-100"
+												}`}
 										>
 											<IdCard className="h-5 w-5" />
 										</div>
 									</div>
 									<h3
-										className={`font-semibold mb-2 ${
-											isDark ? "text-white" : "text-gray-900"
-										}`}
+										className={`font-semibold mb-2 ${isDark ? "text-white" : "text-gray-900"
+											}`}
 									>
 										Name
 									</h3>
 									<p
-										className={`text-sm ${
-											isDark ? "text-gray-400" : "text-gray-600"
-										}`}
+										className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"
+											}`}
 									>
 										We collect your name as provided by your Google
 										account.
@@ -190,37 +173,32 @@ export default function PrivacyPolicy() {
 								</CardContent>
 							</Card>
 							<Card
-								className={`transition-all duration-300 hover:scale-105 ${
-									isDark
-										? "border-gray-700 hover:border-red-700 bg-gray-800/50"
-										: "border-gray-200 hover:border-red-200 bg-white"
-								}`}
+								className={`transition-all duration-300 hover:scale-105 ${isDark
+									? "border-gray-700 hover:border-red-700 bg-gray-800/50"
+									: "border-gray-200 hover:border-red-200 bg-white"
+									}`}
 							>
 								<CardContent className="p-6">
 									<div
-										className={`mb-3 ${
-											isDark ? "text-red-400" : "text-red-600"
-										}`}
+										className={`mb-3 ${isDark ? "text-red-400" : "text-red-600"
+											}`}
 									>
 										<div
-											className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-												isDark ? "bg-red-900/30" : "bg-red-100"
-											}`}
+											className={`w-10 h-10 rounded-lg flex items-center justify-center ${isDark ? "bg-red-900/30" : "bg-red-100"
+												}`}
 										>
 											<Mail className="h-5 w-5" />
 										</div>
 									</div>
 									<h3
-										className={`font-semibold mb-2 ${
-											isDark ? "text-white" : "text-gray-900"
-										}`}
+										className={`font-semibold mb-2 ${isDark ? "text-white" : "text-gray-900"
+											}`}
 									>
 										Email Address
 									</h3>
 									<p
-										className={`text-sm ${
-											isDark ? "text-gray-400" : "text-gray-600"
-										}`}
+										className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"
+											}`}
 									>
 										We collect your email address as provided by your
 										Google account.
@@ -228,37 +206,32 @@ export default function PrivacyPolicy() {
 								</CardContent>
 							</Card>
 							<Card
-								className={`transition-all duration-300 hover:scale-105 ${
-									isDark
-										? "border-gray-700 hover:border-red-700 bg-gray-800/50"
-										: "border-gray-200 hover:border-red-200 bg-white"
-								}`}
+								className={`transition-all duration-300 hover:scale-105 ${isDark
+									? "border-gray-700 hover:border-red-700 bg-gray-800/50"
+									: "border-gray-200 hover:border-red-200 bg-white"
+									}`}
 							>
 								<CardContent className="p-6">
 									<div
-										className={`mb-3 ${
-											isDark ? "text-red-400" : "text-red-600"
-										}`}
+										className={`mb-3 ${isDark ? "text-red-400" : "text-red-600"
+											}`}
 									>
 										<div
-											className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-												isDark ? "bg-red-900/30" : "bg-red-100"
-											}`}
+											className={`w-10 h-10 rounded-lg flex items-center justify-center ${isDark ? "bg-red-900/30" : "bg-red-100"
+												}`}
 										>
 											<Camera className="h-5 w-5" />
 										</div>
 									</div>
 									<h3
-										className={`font-semibold mb-2 ${
-											isDark ? "text-white" : "text-gray-900"
-										}`}
+										className={`font-semibold mb-2 ${isDark ? "text-white" : "text-gray-900"
+											}`}
 									>
 										Profile Image
 									</h3>
 									<p
-										className={`text-sm ${
-											isDark ? "text-gray-400" : "text-gray-600"
-										}`}
+										className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"
+											}`}
 									>
 										We collect your profile image as provided by your
 										Google account.
@@ -273,38 +246,33 @@ export default function PrivacyPolicy() {
 					{/* How We Use Your Information */}
 					<section>
 						<h2
-							className={`text-2xl font-bold mb-6 border-l-4 pl-4 ${
-								isDark
-									? "text-white border-red-400"
-									: "text-gray-900 border-red-600"
-							}`}
+							className={`text-2xl font-bold mb-6 border-l-4 pl-4 ${isDark
+								? "text-white border-red-400"
+								: "text-gray-900 border-red-600"
+								}`}
 						>
 							How We Use Your Information
 						</h2>
 						<p
-							className={`mb-6 leading-relaxed ${
-								isDark ? "text-gray-300" : "text-gray-700"
-							}`}
+							className={`mb-6 leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"
+								}`}
 						>
 							The information we collect is used for the following
 							purposes:
 						</p>
 						<div className="space-y-4">
 							<div
-								className={`flex items-start space-x-4 p-4 rounded-lg ${
-									isDark ? "bg-gray-800/50" : "bg-gray-50"
-								}`}
+								className={`flex items-start space-x-4 p-4 rounded-lg ${isDark ? "bg-gray-800/50" : "bg-gray-50"
+									}`}
 							>
 								<div
-									className={`w-2 h-2 rounded-full mt-3 ${
-										isDark ? "bg-red-400" : "bg-red-600"
-									}`}
+									className={`w-2 h-2 rounded-full mt-3 ${isDark ? "bg-red-400" : "bg-red-600"
+										}`}
 								></div>
 								<div>
 									<h3
-										className={`font-semibold mb-1 ${
-											isDark ? "text-white" : "text-gray-900"
-										}`}
+										className={`font-semibold mb-1 ${isDark ? "text-white" : "text-gray-900"
+											}`}
 									>
 										Authentication
 									</h3>
@@ -319,20 +287,17 @@ export default function PrivacyPolicy() {
 								</div>
 							</div>
 							<div
-								className={`flex items-start space-x-4 p-4 rounded-lg ${
-									isDark ? "bg-gray-800/50" : "bg-gray-50"
-								}`}
+								className={`flex items-start space-x-4 p-4 rounded-lg ${isDark ? "bg-gray-800/50" : "bg-gray-50"
+									}`}
 							>
 								<div
-									className={`w-2 h-2 rounded-full mt-3 ${
-										isDark ? "bg-red-400" : "bg-red-600"
-									}`}
+									className={`w-2 h-2 rounded-full mt-3 ${isDark ? "bg-red-400" : "bg-red-600"
+										}`}
 								></div>
 								<div>
 									<h3
-										className={`font-semibold mb-1 ${
-											isDark ? "text-white" : "text-gray-900"
-										}`}
+										className={`font-semibold mb-1 ${isDark ? "text-white" : "text-gray-900"
+											}`}
 									>
 										Personalization
 									</h3>
@@ -346,20 +311,17 @@ export default function PrivacyPolicy() {
 								</div>
 							</div>
 							<div
-								className={`flex items-start space-x-4 p-4 rounded-lg ${
-									isDark ? "bg-gray-800/50" : "bg-gray-50"
-								}`}
+								className={`flex items-start space-x-4 p-4 rounded-lg ${isDark ? "bg-gray-800/50" : "bg-gray-50"
+									}`}
 							>
 								<div
-									className={`w-2 h-2 rounded-full mt-3 ${
-										isDark ? "bg-red-400" : "bg-red-600"
-									}`}
+									className={`w-2 h-2 rounded-full mt-3 ${isDark ? "bg-red-400" : "bg-red-600"
+										}`}
 								></div>
 								<div>
 									<h3
-										className={`font-semibold mb-1 ${
-											isDark ? "text-white" : "text-gray-900"
-										}`}
+										className={`font-semibold mb-1 ${isDark ? "text-white" : "text-gray-900"
+											}`}
 									>
 										Communication
 									</h3>
@@ -381,18 +343,16 @@ export default function PrivacyPolicy() {
 					{/* Data Storage and Security */}
 					<section>
 						<h2
-							className={`text-2xl font-bold mb-6 border-l-4 pl-4 ${
-								isDark
-									? "text-white border-red-400"
-									: "text-gray-900 border-red-600"
-							}`}
+							className={`text-2xl font-bold mb-6 border-l-4 pl-4 ${isDark
+								? "text-white border-red-400"
+								: "text-gray-900 border-red-600"
+								}`}
 						>
 							Data Storage and Security
 						</h2>
 						<p
-							className={`mb-6 leading-relaxed ${
-								isDark ? "text-gray-300" : "text-gray-700"
-							}`}
+							className={`mb-6 leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"
+								}`}
 						>
 							We take the security of your personal information seriously
 							and implement appropriate technical and organizational
@@ -402,29 +362,25 @@ export default function PrivacyPolicy() {
 						</p>
 						<div className="grid md:grid-cols-2 gap-6">
 							<Card
-								className={`transition-colors duration-300 ${
-									isDark
-										? "border-gray-700 bg-gray-800/50"
-										: "border-gray-200 bg-white"
-								}`}
+								className={`transition-colors duration-300 ${isDark
+									? "border-gray-700 bg-gray-800/50"
+									: "border-gray-200 bg-white"
+									}`}
 							>
 								<CardContent className="p-6">
 									<h3
-										className={`font-semibold mb-3 flex items-center ${
-											isDark ? "text-white" : "text-gray-900"
-										}`}
+										className={`font-semibold mb-3 flex items-center ${isDark ? "text-white" : "text-gray-900"
+											}`}
 									>
 										<Shield
-											className={`h-5 w-5 mr-2 ${
-												isDark ? "text-red-400" : "text-red-600"
-											}`}
+											className={`h-5 w-5 mr-2 ${isDark ? "text-red-400" : "text-red-600"
+												}`}
 										/>
 										Data Storage
 									</h3>
 									<p
-										className={`text-sm ${
-											isDark ? "text-gray-300" : "text-gray-700"
-										}`}
+										className={`text-sm ${isDark ? "text-gray-300" : "text-gray-700"
+											}`}
 									>
 										Your data is stored securely on our servers and is
 										only accessible by authorized personnel.
@@ -432,29 +388,25 @@ export default function PrivacyPolicy() {
 								</CardContent>
 							</Card>
 							<Card
-								className={`transition-colors duration-300 ${
-									isDark
-										? "border-gray-700 bg-gray-800/50"
-										: "border-gray-200 bg-white"
-								}`}
+								className={`transition-colors duration-300 ${isDark
+									? "border-gray-700 bg-gray-800/50"
+									: "border-gray-200 bg-white"
+									}`}
 							>
 								<CardContent className="p-6">
 									<h3
-										className={`font-semibold mb-3 flex items-center ${
-											isDark ? "text-white" : "text-gray-900"
-										}`}
+										className={`font-semibold mb-3 flex items-center ${isDark ? "text-white" : "text-gray-900"
+											}`}
 									>
 										<Shield
-											className={`h-5 w-5 mr-2 ${
-												isDark ? "text-red-400" : "text-red-600"
-											}`}
+											className={`h-5 w-5 mr-2 ${isDark ? "text-red-400" : "text-red-600"
+												}`}
 										/>
 										Encryption
 									</h3>
 									<p
-										className={`text-sm ${
-											isDark ? "text-gray-300" : "text-gray-700"
-										}`}
+										className={`text-sm ${isDark ? "text-gray-300" : "text-gray-700"
+											}`}
 									>
 										We use industry-standard encryption to protect
 										your data during transmission and storage.
@@ -469,18 +421,16 @@ export default function PrivacyPolicy() {
 					{/* Sharing Your Information */}
 					<section>
 						<h2
-							className={`text-2xl font-bold mb-4 border-l-4 pl-4 ${
-								isDark
-									? "text-white border-red-400"
-									: "text-gray-900 border-red-600"
-							}`}
+							className={`text-2xl font-bold mb-4 border-l-4 pl-4 ${isDark
+								? "text-white border-red-400"
+								: "text-gray-900 border-red-600"
+								}`}
 						>
 							Sharing Your Information
 						</h2>
 						<p
-							className={`leading-relaxed ${
-								isDark ? "text-gray-300" : "text-gray-700"
-							}`}
+							className={`leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"
+								}`}
 						>
 							We do not share your personal information with third-party
 							services except as necessary to provide our services or as
@@ -494,34 +444,30 @@ export default function PrivacyPolicy() {
 					{/* Your Rights */}
 					<section>
 						<h2
-							className={`text-2xl font-bold mb-6 border-l-4 pl-4 ${
-								isDark
-									? "text-white border-red-400"
-									: "text-gray-900 border-red-600"
-							}`}
+							className={`text-2xl font-bold mb-6 border-l-4 pl-4 ${isDark
+								? "text-white border-red-400"
+								: "text-gray-900 border-red-600"
+								}`}
 						>
 							Your Rights
 						</h2>
 						<p
-							className={`mb-6 leading-relaxed ${
-								isDark ? "text-gray-300" : "text-gray-700"
-							}`}
+							className={`mb-6 leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"
+								}`}
 						>
 							You have the following rights regarding your personal
 							information:
 						</p>
 						<div className="space-y-4">
 							<div
-								className={`p-4 border rounded-lg transition-colors duration-300 ${
-									isDark
-										? "border-gray-700 bg-gray-800/30"
-										: "border-gray-200 bg-white"
-								}`}
+								className={`p-4 border rounded-lg transition-colors duration-300 ${isDark
+									? "border-gray-700 bg-gray-800/30"
+									: "border-gray-200 bg-white"
+									}`}
 							>
 								<h3
-									className={`font-semibold mb-2 ${
-										isDark ? "text-white" : "text-gray-900"
-									}`}
+									className={`font-semibold mb-2 ${isDark ? "text-white" : "text-gray-900"
+										}`}
 								>
 									Access
 								</h3>
@@ -535,16 +481,14 @@ export default function PrivacyPolicy() {
 								</p>
 							</div>
 							<div
-								className={`p-4 border rounded-lg transition-colors duration-300 ${
-									isDark
-										? "border-gray-700 bg-gray-800/30"
-										: "border-gray-200 bg-white"
-								}`}
+								className={`p-4 border rounded-lg transition-colors duration-300 ${isDark
+									? "border-gray-700 bg-gray-800/30"
+									: "border-gray-200 bg-white"
+									}`}
 							>
 								<h3
-									className={`font-semibold mb-2 ${
-										isDark ? "text-white" : "text-gray-900"
-									}`}
+									className={`font-semibold mb-2 ${isDark ? "text-white" : "text-gray-900"
+										}`}
 								>
 									Correction
 								</h3>
@@ -558,16 +502,14 @@ export default function PrivacyPolicy() {
 								</p>
 							</div>
 							<div
-								className={`p-4 border rounded-lg transition-colors duration-300 ${
-									isDark
-										? "border-gray-700 bg-gray-800/30"
-										: "border-gray-200 bg-white"
-								}`}
+								className={`p-4 border rounded-lg transition-colors duration-300 ${isDark
+									? "border-gray-700 bg-gray-800/30"
+									: "border-gray-200 bg-white"
+									}`}
 							>
 								<h3
-									className={`font-semibold mb-2 ${
-										isDark ? "text-white" : "text-gray-900"
-									}`}
+									className={`font-semibold mb-2 ${isDark ? "text-white" : "text-gray-900"
+										}`}
 								>
 									Deletion
 								</h3>
@@ -583,32 +525,9 @@ export default function PrivacyPolicy() {
 							</div>
 						</div>
 						<p
-							className={`mt-6 leading-relaxed ${
-								isDark ? "text-gray-300" : "text-gray-700"
-							}`}
+							className={`mt-6 leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"
+								}`}
 						>
-							To exercise these rights, please contact us at{" "}
-							<a
-								href={`mailto:${siteConfig.creators.lakshaySawhney.email}`}
-								className={`font-medium transition-colors duration-200 ${
-									isDark
-										? "text-red-400 hover:text-red-300"
-										: "text-red-600 hover:text-red-700"
-								}`}
-							>
-								{siteConfig.creators.lakshaySawhney.email}
-							</a>{" "}
-							or{" "}
-							<a
-								href={`mailto:${siteConfig.creators.himanishPuri.email}`}
-								className={`font-medium transition-colors duration-200 ${
-									isDark
-										? "text-red-400 hover:text-red-300"
-										: "text-red-600 hover:text-red-700"
-								}`}
-							>
-								{siteConfig.creators.himanishPuri.email}
-							</a>
 							.
 						</p>
 					</section>
@@ -618,18 +537,16 @@ export default function PrivacyPolicy() {
 					{/* Changes to This Privacy Policy */}
 					<section>
 						<h2
-							className={`text-2xl font-bold mb-4 border-l-4 pl-4 ${
-								isDark
-									? "text-white border-red-400"
-									: "text-gray-900 border-red-600"
-							}`}
+							className={`text-2xl font-bold mb-4 border-l-4 pl-4 ${isDark
+								? "text-white border-red-400"
+								: "text-gray-900 border-red-600"
+								}`}
 						>
 							Changes to This Privacy Policy
 						</h2>
 						<p
-							className={`leading-relaxed ${
-								isDark ? "text-gray-300" : "text-gray-700"
-							}`}
+							className={`leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"
+								}`}
 						>
 							We may update this Privacy Policy from time to time to
 							reflect changes in our practices or legal requirements. We
@@ -644,86 +561,76 @@ export default function PrivacyPolicy() {
 					{/* Contact Us */}
 					<section>
 						<h2
-							className={`text-2xl font-bold mb-6 border-l-4 pl-4 ${
-								isDark
-									? "text-white border-red-400"
-									: "text-gray-900 border-red-600"
-							}`}
+							className={`text-2xl font-bold mb-6 border-l-4 pl-4 ${isDark
+								? "text-white border-red-400"
+								: "text-gray-900 border-red-600"
+								}`}
 						>
 							Contact Us
 						</h2>
 						<p
-							className={`mb-6 leading-relaxed ${
-								isDark ? "text-gray-300" : "text-gray-700"
-							}`}
+							className={`mb-6 leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"
+								}`}
 						>
 							If you have any questions or concerns about this Privacy
 							Policy or our data practices, please contact us at:
 						</p>
 						<div className="grid md:grid-cols-2 gap-6">
 							<Card
-								className={`transition-colors duration-300 ${
-									isDark
-										? "border-red-700 bg-red-950/20"
-										: "border-red-200 bg-red-50"
-								}`}
+								className={`transition-colors duration-300 ${isDark
+									? "border-red-700 bg-red-950/20"
+									: "border-red-200 bg-red-50"
+									}`}
 							>
 								<CardContent className="p-6">
 									<div className="flex items-center space-x-3 mb-4">
 										<Mail
-											className={`h-6 w-6 ${
-												isDark ? "text-red-400" : "text-red-600"
-											}`}
+											className={`h-6 w-6 ${isDark ? "text-red-400" : "text-red-600"
+												}`}
 										/>
 										<h3
-											className={`font-semibold ${
-												isDark ? "text-white" : "text-gray-900"
-											}`}
+											className={`font-semibold ${isDark ? "text-white" : "text-gray-900"
+												}`}
 										>
 											Email
 										</h3>
 									</div>
 									<a
-										href={`mailto:${siteConfig.creators.lakshaySawhney.email}`}
-										className={`font-medium transition-colors duration-200 ${
-											isDark
-												? "text-red-400 hover:text-red-300"
-												: "text-red-600 hover:text-red-700"
-										}`}
+										href={`mailto:${projectConfig.team[0].email}`}
+										className={`font-medium transition-colors duration-200 ${isDark
+											? "text-red-400 hover:text-red-300"
+											: "text-red-600 hover:text-red-700"
+											}`}
 									>
-										{siteConfig.creators.lakshaySawhney.email}
+										{projectConfig.team[0].email}
 									</a>
 									<br />
 									<a
-										href={`mailto:${siteConfig.creators.himanishPuri.email}`}
-										className={`font-medium transition-colors duration-200 ${
-											isDark
-												? "text-red-400 hover:text-red-300"
-												: "text-red-600 hover:text-red-700"
-										}`}
+										href={`mailto:${projectConfig.team[1].email}`}
+										className={`font-medium transition-colors duration-200 ${isDark
+											? "text-red-400 hover:text-red-300"
+											: "text-red-600 hover:text-red-700"
+											}`}
 									>
-										{siteConfig.creators.himanishPuri.email}
+										{projectConfig.team[1].email}
 									</a>
 								</CardContent>
 							</Card>
 							<Card
-								className={`transition-colors duration-300 ${
-									isDark
-										? "border-red-700 bg-red-950/20"
-										: "border-red-200 bg-red-50"
-								}`}
+								className={`transition-colors duration-300 ${isDark
+									? "border-red-700 bg-red-950/20"
+									: "border-red-200 bg-red-50"
+									}`}
 							>
 								<CardContent className="p-6">
 									<div className="flex items-center space-x-3 mb-4">
 										<MapPin
-											className={`h-6 w-6 ${
-												isDark ? "text-red-400" : "text-red-600"
-											}`}
+											className={`h-6 w-6 ${isDark ? "text-red-400" : "text-red-600"
+												}`}
 										/>
 										<h3
-											className={`font-semibold ${
-												isDark ? "text-white" : "text-gray-900"
-											}`}
+											className={`font-semibold ${isDark ? "text-white" : "text-gray-900"
+												}`}
 										>
 											Address
 										</h3>

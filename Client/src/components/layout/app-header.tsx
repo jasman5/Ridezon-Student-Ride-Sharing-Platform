@@ -64,7 +64,7 @@ export function AppHeader({ onCreatePool }: AppHeaderProps) {
 						animate={{ opacity: 1, x: 0 }}
 						transition={{ delay: 0.2, duration: 0.5 }}
 					>
-						ThaparGo
+						Ridezon
 					</motion.span>
 				</Link>
 

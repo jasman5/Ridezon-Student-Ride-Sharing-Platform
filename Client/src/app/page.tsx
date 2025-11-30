@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import Image from "next/image";
+
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { AnimatedButton } from "@/components/ui/animated-button";
@@ -47,7 +47,7 @@ export default function LandingPage() {
 	const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
 	useEffect(() => {
-		// Check if user is authenticated //!TO CHANGE
+		// Check if user is authenticated
 		const accessToken = sessionStorage.getItem("access");
 		setIsAuthenticated(!!accessToken);
 	}, []);
@@ -110,7 +110,7 @@ export default function LandingPage() {
 								transition={{ duration: 0.5 }}
 								className="mb-6"
 							>
-								<h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+								<h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight tracking-tight">
 									Let&apos;s Go <br />
 									<motion.span
 										className="text-primary"
@@ -118,13 +118,13 @@ export default function LandingPage() {
 										animate={{ opacity: 1 }}
 										transition={{ delay: 0.5, duration: 0.5 }}
 									>
-										On ThaparGo!
+										With Ridezon!
 									</motion.span>
 								</h1>
-								<span className="px-8 py-1.5 text-base font-medium rounded-full bg-primary/10 text-primary inline-block mb-4">
+								<span className="px-6 py-2 text-sm font-medium rounded-full bg-primary/10 text-primary inline-block mb-6 border border-primary/20">
 									Share your ride, Save your money
 								</span>
-								<p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+								<p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
 									Connect with fellow students for convenient and
 									cost-effective transportation to and from campus,
 									home, or anywhere else.
@@ -138,23 +138,23 @@ export default function LandingPage() {
 								transition={{ delay: 0.3, duration: 0.5 }}
 							>
 								<AnimatedButton
-									className="bg-primary hover:bg-primary/90 px-8 py-6 text-lg"
+									className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg shadow-lg shadow-primary/25"
 									onClick={handleGetStarted}
-									glowColor="rgba(255, 0, 0, 0.3)"
+									glowColor="rgba(220, 38, 38, 0.5)"
 								>
 									Get Started
 								</AnimatedButton>
 								<Button
 									variant="outline"
 									size="lg"
-									className="bg-gray-50 dark:bg-black hover:dark:bg-gray-900 px-8 py-6 text-lg border-white/20 dark:border-white/10"
+									className="bg-background hover:bg-accent text-foreground px-8 py-6 text-lg border-input"
 									onClick={() => smoothScrollTo("about")}
 								>
 									Learn More
 								</Button>
 							</motion.div>
 
-							<motion.div
+							{/* <motion.div
 								className="mt-16 relative w-full max-w-4xl"
 								initial={{ opacity: 0, y: 40 }}
 								animate={{ opacity: 1, y: 0 }}
@@ -163,14 +163,14 @@ export default function LandingPage() {
 								<div className="relative w-full aspect-video rounded-xl overflow-hidden border border-white/20 dark:border-white/10 shadow-2xl">
 									<div className="absolute inset-0" />
 									<Image
-										src="/thapargo3.jpg"
+										src="/placeholder.svg"
 										alt="Thapar University ThaparGo Dashboard"
 										width={1280}
 										height={720}
 										className="w-full h-full object-cover"
 									/>
-								</div>
-							</motion.div>
+									</div>
+							</motion.div> */}
 						</div>
 					</div>
 				</section>
@@ -178,7 +178,7 @@ export default function LandingPage() {
 				{/* Features Section */}
 				<section
 					id="features"
-					className="py-20 bg-white/5 dark:bg-black/5 backdrop-blur-sm"
+					className="py-20 bg-muted/30"
 				>
 					<div className="container mx-auto px-4">
 						<div className="text-center mb-16">
@@ -190,7 +190,7 @@ export default function LandingPage() {
 								transition={{ duration: 0.5 }}
 							>
 								Why Choose{" "}
-								<span className="text-primary">ThaparGo</span>?
+								<span className="text-primary">Ridezon</span>?
 							</motion.h2>
 							<motion.p
 								className="text-lg text-muted-foreground max-w-2xl mx-auto"
@@ -199,8 +199,7 @@ export default function LandingPage() {
 								viewport={{ once: true }}
 								transition={{ duration: 0.5, delay: 0.2 }}
 							>
-								Our platform makes it easy for Thapar University
-								students to coordinate rides and save money on
+								Our platform makes it easy for students to coordinate rides and save money on
 								transportation.
 							</motion.p>
 						</div>
@@ -209,20 +208,20 @@ export default function LandingPage() {
 							{features.map((feature, index) => (
 								<motion.div
 									key={index}
-									className="bg-white/10 dark:bg-black/10 backdrop-blur-md rounded-xl p-6 border border-white/20 dark:border-white/10"
+									className="bg-card hover:bg-accent/50 rounded-xl p-6 border border-border shadow-sm transition-colors"
 									initial={{ opacity: 0, y: 20 }}
 									whileInView={{ opacity: 1, y: 0 }}
 									viewport={{ once: true }}
 									transition={{ duration: 0.5, delay: 0.1 * index }}
 									whileHover={{
 										y: -5,
-										boxShadow: "0 10px 30px -15px rgba(0, 0, 0, 0.3)",
+										boxShadow: "0 10px 30px -15px rgba(0, 0, 0, 0.1)",
 									}}
 								>
 									<div className="bg-primary/10 rounded-full w-16 h-16 flex items-center justify-center mb-4">
 										{feature.icon}
 									</div>
-									<h3 className="text-xl font-semibold mb-2">
+									<h3 className="text-xl font-semibold mb-2 text-foreground">
 										{feature.title}
 									</h3>
 									<p className="text-muted-foreground">
@@ -249,16 +248,15 @@ export default function LandingPage() {
 								transition={{ duration: 0.6 }}
 							>
 								<h2 className="text-3xl md:text-4xl font-bold mb-6">
-									About <span className="text-primary">ThaparGo</span>
+									About <span className="text-primary">Ridezon</span>
 								</h2>
-								<p className="text-lg mb-6 text-muted-foreground">
-									ThaparGo is a student-led initiative designed to
-									solve transportation challenges faced by students at
-									Thapar University. Our platform connects students who
+								<p className="text-lg mb-6 text-muted-foreground leading-relaxed">
+									Ridezon is a student-led initiative designed to
+									solve transportation challenges faced by students. Our platform connects students who
 									are traveling in the same direction, allowing them to
 									share rides and split costs.
 								</p>
-								<p className="text-lg mb-6 text-muted-foreground">
+								<p className="text-lg mb-6 text-muted-foreground leading-relaxed">
 									Whether you&apos;re commuting to campus daily,
 									heading home for the weekend, or planning a trip to
 									the city, our platform makes it easy to find travel
@@ -285,9 +283,9 @@ export default function LandingPage() {
 									].map((item, index) => (
 										<div
 											key={index}
-											className="flex items-center gap-3"
+											className="flex items-center gap-3 text-foreground"
 										>
-											<div className="text-primary">{item.icon}</div>
+											<div className="text-primary bg-primary/10 p-2 rounded-full">{item.icon}</div>
 											<span>{item.text}</span>
 										</div>
 									))}
@@ -301,15 +299,8 @@ export default function LandingPage() {
 								viewport={{ once: true }}
 								transition={{ duration: 0.6 }}
 							>
-								<div className="relative rounded-xl overflow-hidden border border-white/20 dark:border-white/10">
-									<div className="absolute inset-0 z-10" />
-									<Image
-										src="/thapargo2.jpg"
-										alt="Students carpooling"
-										width={800}
-										height={600}
-										className="w-full h-auto"
-									/>
+								<div className="relative rounded-xl overflow-hidden border border-border bg-gradient-to-bl from-primary/5 to-background aspect-[4/3] flex items-center justify-center shadow-lg">
+									<Users className="w-20 h-20 text-primary/60" />
 								</div>
 							</motion.div>
 						</div>
@@ -319,7 +310,7 @@ export default function LandingPage() {
 				{/* FAQ Section */}
 				<section
 					id="faq"
-					className="py-20 bg-white/5 dark:bg-black/5 backdrop-blur-sm"
+					className="py-20 bg-muted/30"
 				>
 					<div className="container mx-auto px-4">
 						<div className="text-center mb-16">
@@ -339,7 +330,7 @@ export default function LandingPage() {
 								viewport={{ once: true }}
 								transition={{ duration: 0.5, delay: 0.2 }}
 							>
-								Get answers to common questions about using the ThaparGo
+								Get answers to common questions about using the Ridezon
 								platform.
 							</motion.p>
 						</div>
@@ -354,7 +345,7 @@ export default function LandingPage() {
 								{
 									question: "Is there a fee to use the platform?",
 									answer:
-										"No, the platform is completely free for all Thapar University students. You only pay for your share of the transportation costs as agreed with your carpool group.",
+										"No, the platform is completely free for all students. You only pay for your share of the transportation costs as agreed with your carpool group.",
 								},
 								{
 									question:
@@ -370,13 +361,13 @@ export default function LandingPage() {
 							].map((faq, index) => (
 								<motion.div
 									key={index}
-									className="bg-white/10 dark:bg-black/10 backdrop-blur-md rounded-xl p-6 border border-white/20 dark:border-white/10"
+									className="bg-card rounded-xl p-6 border border-border shadow-sm"
 									initial={{ opacity: 0, y: 20 }}
 									whileInView={{ opacity: 1, y: 0 }}
 									viewport={{ once: true }}
 									transition={{ duration: 0.5, delay: 0.1 * index }}
 								>
-									<h3 className="text-xl font-semibold mb-2">
+									<h3 className="text-xl font-semibold mb-2 text-foreground">
 										{faq.question}
 									</h3>
 									<p className="text-muted-foreground">{faq.answer}</p>
@@ -390,24 +381,24 @@ export default function LandingPage() {
 				<section className="py-20">
 					<div className="container mx-auto px-4">
 						<motion.div
-							className="bg-primary/10 backdrop-blur-md rounded-xl p-12 border border-primary/20 text-center"
+							className="bg-primary/5 backdrop-blur-md rounded-xl p-12 border border-primary/10 text-center"
 							initial={{ opacity: 0, y: 20 }}
 							whileInView={{ opacity: 1, y: 0 }}
 							viewport={{ once: true }}
 							transition={{ duration: 0.5 }}
 						>
-							<h2 className="text-3xl md:text-4xl font-bold mb-4">
+							<h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
 								Ready to Start Carpooling?
 							</h2>
 							<p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-								Join the ThaparGo community today and start saving on
+								Join the Ridezon community today and start saving on
 								your transportation costs while making new connections.
 							</p>
 							<div className="inline-block">
 								<AnimatedButton
-									className="bg-primary hover:bg-primary/90 px-8 py-6 text-lg"
+									className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg shadow-lg shadow-primary/25"
 									onClick={handleGetStarted}
-									glowColor="rgba(255, 0, 0, 0.3)"
+									glowColor="rgba(220, 38, 38, 0.5)"
 								>
 									Get Started Now
 								</AnimatedButton>

@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+  engineType = "library"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String?  // Nullable for Google Auth users
+  fullName  String
+  phone     String?  @unique
+  gender    String?
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdRides Ride[]        @relation("CreatedRides")
+  ridesJoined  Ride[]        @relation("RidePassengers")
+  rideRequests RideRequest[]
+  messages     Message[]
+  expensesPaid Expense[]
+}
+
+model Ride {
+  id               String   @id @default(uuid())
+  origin           String
+  destination      String
+  departureTime    DateTime
+  transportMode    String
+  totalSeats       Int
+  pricePerSeat     Float?
+  description      String?
+  genderPreference String?  // "Any", "Male", "Female"
+  status           String   @default("OPEN") // OPEN, FULL, COMPLETED, CANCELLED
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  creatorId String
+  creator   User   @relation("CreatedRides", fields: [creatorId], references: [id])
+
+  requests RideRequest[]
+  passengers User[] @relation("RidePassengers")
+  group    Group?
+}
+
+model RideRequest {
+  id        String   @id @default(uuid())
+  status    String   @default("PENDING") // PENDING, ACCEPTED, REJECTED
+  createdAt DateTime @default(now())
+
+  rideId String
+  ride   Ride   @relation(fields: [rideId], references: [id])
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model Group {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  rideId String @unique
+  ride   Ride   @relation(fields: [rideId], references: [id])
+
+  messages Message[]
+  expenses Expense[]
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+
+  groupId String
+  group   Group  @relation(fields: [groupId], references: [id])
+
+  senderId String
+  sender   User   @relation(fields: [senderId], references: [id])
+}
+
+model Expense {
+  id           String   @id @default(uuid())
+  amount       Float
+  description  String
+  splitDetails Json?    // Store who owes what
+  createdAt    DateTime @default(now())
+
+  groupId String
+  group   Group  @relation(fields: [groupId], references: [id])
+
+  payerId String
+  payer   User   @relation(fields: [payerId], references: [id])
+}

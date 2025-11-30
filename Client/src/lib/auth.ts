@@ -1,11 +1,8 @@
 import { toast } from "@/hooks/use-toast";
 
-// const API_BASE_URL = "http://127.0.0.1:8000";
-const API_BASE_URL = "https://api.thapargo.com";
+const API_BASE_URL = "http://localhost:4000/api";
+// const API_BASE_URL = "https://api.ridezon.com";
 
-/**
- * Generic API request handler with error handling
- */
 async function apiRequest<T>(
 	endpoint: string,
 	options: RequestInit = {},
@@ -78,6 +75,7 @@ interface SignupData {
 }
 
 export interface CurrentUserDetailsProps {
+	id: string;
 	email: string;
 	full_name: string;
 	phone_number: string;
@@ -162,33 +160,32 @@ export const authApi = {
 			// Get tokens from local storage
 			const refreshToken = sessionStorage.getItem("refresh");
 
-			if (!refreshToken) {
-				throw new Error("No tokens found for logout");
+			if (refreshToken) {
+				// Make logout API request
+				await apiRequest<void>(
+					"/auth/logout/",
+					{
+						method: "POST",
+						body: JSON.stringify({
+							refresh_token: refreshToken,
+						}),
+					},
+					"Failed to logout",
+				);
 			}
-
-			// Make logout API request
-			await apiRequest<void>(
-				"/auth/logout/",
-				{
-					method: "POST",
-					body: JSON.stringify({
-						refresh_token: refreshToken,
-					}),
-				},
-				"Failed to logout",
-			);
 		} catch (error) {
 			console.error("Logout Error:", error);
+			// We don't throw here to ensure client-side logout always completes
 			toast({
-				title: "Logout Error",
-				description: error instanceof Error ? error.message : String(error),
-				variant: "destructive",
+				title: "Logout Warning",
+				description: "Logged out locally, but server session might persist.",
+				variant: "default",
 			});
-
-			throw error;
+		} finally {
+			// Always clear local session
+			sessionStorage.removeItem("access");
+			sessionStorage.removeItem("refresh");
+			sessionStorage.removeItem("user");
 		}
-		sessionStorage.removeItem("access");
-		sessionStorage.removeItem("refresh");
-		sessionStorage.removeItem("user");
 	},
 };

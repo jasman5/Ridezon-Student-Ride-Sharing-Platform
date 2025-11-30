@@ -19,8 +19,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "ThaparGo - Share Your Ride",
-	description: "Find and share rides with others going your way",
+	title: "Ridezon - Student Ride Sharing",
+	description: "Ridezon is a ride sharing platform for students.",
+	manifest: "/manifest.json",
 };
 
 export default function RootLayout({

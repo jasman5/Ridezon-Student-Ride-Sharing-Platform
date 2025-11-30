@@ -17,7 +17,7 @@ export function ThemeToggle() {
 			variant="ghost"
 			size="icon"
 			onClick={toggleTheme}
-			className="rounded-full bg-white/20 dark:bg-black/20 backdrop-blur-md hover:bg-white/30 dark:hover:bg-black/30"
+			className="rounded-full bg-card/50 backdrop-blur-md hover:bg-accent border border-border"
 		>
 			<motion.div
 				initial={{ scale: 0.8, rotate: 0 }}

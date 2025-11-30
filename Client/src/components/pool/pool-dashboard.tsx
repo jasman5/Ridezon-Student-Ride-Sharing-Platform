@@ -286,6 +286,12 @@ export default function PoolDashboard() {
 	const isCurrentUserCreator = useMemo(() => {
 		if (!selectedPool || !currentUser) return false;
 
+		// Check by email if available (more reliable)
+		if (selectedPool.created_by?.email && currentUser.email) {
+			return selectedPool.created_by.email === currentUser.email;
+		}
+
+		// Fallback to name check
 		return selectedPool.created_by?.full_name === currentUser.full_name;
 	}, [selectedPool, currentUser]);
 
@@ -347,7 +353,7 @@ export default function PoolDashboard() {
 						/>
 						<Input
 							placeholder="Search by creator..."
-							className="pl-10 bg-white/20 dark:bg-black/20 dark:border-white/10 backdrop-blur-md border-red-500 border-2 placeholder:text-muted-foreground text-foreground"
+							className="pl-10 bg-card/50 backdrop-blur-md border-border placeholder:text-muted-foreground text-foreground focus:ring-primary"
 							value={filters.searchQuery}
 							onChange={handleSearchChange}
 						/>
@@ -356,7 +362,7 @@ export default function PoolDashboard() {
 						{/* Create Pool button for mobile - hidden on desktop since it's in navbar */}
 						<Button
 							onClick={() => setIsCreatePoolOpen(true)}
-							className="bg-primary hover:bg-primary/90 flex items-center gap-2 md:hidden whitespace-nowrap flex-[2]"
+							className="bg-primary hover:bg-primary/90 text-primary-foreground flex items-center gap-2 md:hidden whitespace-nowrap flex-[2]"
 						>
 							<PlusCircle size={18} />
 							Create Pool
@@ -382,7 +388,7 @@ export default function PoolDashboard() {
 					defaultValue="all"
 					className="mb-6"
 				>
-					<TabsList className="bg-white/20 dark:bg-black/20 backdrop-blur-md border border-white/20 dark:border-white/10 w-full sm:w-auto">
+					<TabsList className="bg-card/50 backdrop-blur-md border border-border w-full sm:w-auto">
 						<TabsTrigger
 							value="all"
 							className="flex-1 sm:flex-initial data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
@@ -531,7 +537,7 @@ export default function PoolDashboard() {
 				open={isCreatePoolOpen}
 				onOpenChange={setIsCreatePoolOpen}
 			>
-				<DialogContent className="sm:max-w-[700px] bg-background/80 backdrop-blur-lg border border-white/20 dark:border-white/10 max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+				<DialogContent className="sm:max-w-[700px] bg-background/95 backdrop-blur-xl border border-border max-h-[90vh] overflow-y-auto p-4 sm:p-6">
 					<DialogHeader>
 						<DialogTitle className="text-xl text-primary">
 							Create New Pool

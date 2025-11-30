@@ -10,33 +10,59 @@ export interface PoolMembers {
 
 export interface Pool {
 	id: string | number;
+	// Backend fields
+	origin?: string;
+	destination?: string;
+	departureTime?: string;
+	transportMode?: string;
+	totalSeats?: number;
+	pricePerSeat?: number;
+	description?: string;
+	genderPreference?: string;
+	creatorId?: string;
+	creator?: {
+		fullName: string;
+		avatar?: string;
+		phone?: string;
+		gender?: string;
+		email?: string; // Added for compatibility check
+	};
+	passengers?: {
+		id?: string;
+		fullName: string;
+		avatar?: string;
+		phone?: string;
+		gender?: string;
+	}[];
+	group?: {
+		id: string;
+	};
+
+	// Legacy fields (keep for now if used elsewhere, but mark optional)
 	created_by?: {
 		full_name: string;
 		phone_number: string;
 		gender: string;
 		email: string;
 	};
-	createdBy?: string; // Keep for backward compatibility
+	createdBy?: string;
 	members?: PoolMembers[];
 	start_point?: string;
-	startPoint?: string; // Keep for backward compatibility
+	startPoint?: string;
 	end_point?: string;
-	endPoint?: string; // Keep for backward compatibility
+	endPoint?: string;
 	departure_time?: string;
-	departureTime?: string; // Keep for backward compatibility
 	arrival_time?: string;
-	arrivalTime?: string; // Keep for backward compatibility
+	arrivalTime?: string;
 	transport_mode?: string;
-	transportMode?: string; // Keep for backward compatibility
 	total_persons?: number;
-	totalPersons?: number; // Keep for backward compatibility
+	totalPersons?: number;
 	current_persons?: number;
-	currentPersons?: number; // Keep for backward compatibility
+	currentPersons?: number;
 	fare_per_head?: string;
-	totalFare?: number; // Keep for backward compatibility
-	description?: string;
+	totalFare?: number;
 	is_female_only?: boolean;
-	femaleOnly?: boolean; // Keep for backward compatibility
+	femaleOnly?: boolean;
 }
 
 export interface FilterState {

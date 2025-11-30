@@ -28,7 +28,7 @@ import {
 import { Clock, MapPin, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createPoolSchema, type CreatePoolFormValues } from "@/schemas/schema";
-import { calculateFormattedFarePerHead } from "@/lib/utils/pool-utils";
+import { calculateFormattedFarePerHead, formatDateForInput } from "@/lib/utils/pool-utils";
 import { useToast } from "@/hooks/use-toast";
 import { poolApi } from "@/lib/api";
 import type { Pool } from "@/types/pool";
@@ -63,8 +63,8 @@ export function EditPoolForm({
 		defaultValues: {
 			start_point: pool.start_point ?? pool.startPoint ?? "",
 			end_point: pool.end_point ?? pool.endPoint ?? "",
-			departure_time: pool.departure_time ?? pool.departureTime ?? "",
-			arrival_time: pool.arrival_time ?? pool.arrivalTime ?? "",
+			departure_time: formatDateForInput(pool.departure_time ?? pool.departureTime),
+			arrival_time: formatDateForInput(pool.arrival_time ?? pool.arrivalTime),
 			transport_mode: pool.transport_mode ?? pool.transportMode ?? "",
 			total_persons: pool.total_persons ?? pool.totalPersons ?? 1,
 			current_persons: pool.current_persons ?? pool.currentPersons ?? 1,
@@ -72,7 +72,7 @@ export function EditPoolForm({
 				pool.totalFare ??
 				(pool.fare_per_head
 					? Number.parseFloat(pool.fare_per_head) *
-					  (pool.total_persons ?? pool.totalPersons ?? 1)
+					(pool.total_persons ?? pool.totalPersons ?? 1)
 					: 0),
 			description: pool.description ?? "",
 			is_female_only: pool.is_female_only ?? pool.femaleOnly ?? false,
@@ -373,8 +373,8 @@ export function EditPoolForm({
 											className={cn(
 												"bg-white/20 dark:bg-black/20 border-white/20 dark:border-white/10",
 												field.value >
-													form.getValues("total_persons") &&
-													"border-red-500 focus-visible:ring-red-500",
+												form.getValues("total_persons") &&
+												"border-red-500 focus-visible:ring-red-500",
 											)}
 										/>
 									</FormControl>
@@ -499,9 +499,6 @@ export function EditPoolForm({
 						className="bg-primary hover:bg-primary/90"
 						glowColor="rgba(255, 0, 0, 0.3)"
 						disabled={isSubmitting}
-						onClick={() => {
-							handleSubmit(form.getValues());
-						}}
 					>
 						{isSubmitting ? (
 							<div className="h-5 w-5 border-2 border-primary-foreground/50 border-t-transparent rounded-full animate-spin" />

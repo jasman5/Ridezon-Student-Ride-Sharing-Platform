@@ -7,11 +7,11 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Github, LogOut, User } from "lucide-react";
-import { useTheme } from "next-themes";
 import { authApi } from "@/lib";
-import { siteConfig } from "@/lib/config";
+import { projectConfig } from "@/lib/config";
 import { gsap } from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 
@@ -30,25 +30,21 @@ export function LandingNavbar() {
 	const pathname = usePathname();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
-	const { resolvedTheme } = useTheme();
-	const [mounted, setMounted] = useState(false);
 
 	const isPoolPage = pathname === "/pools";
 	const isAuthPage = pathname === "/login" || pathname === "/signup";
 
-	useEffect(() => {
-		setIsAuthenticated(!!sessionStorage.getItem("access"));
-	}, []);
+	const { resolvedTheme } = useTheme();
+	const [mounted, setMounted] = useState(false);
 
 	useEffect(() => {
 		setMounted(true);
+		setIsAuthenticated(!!sessionStorage.getItem("access"));
 	}, []);
 
 	if (isPoolPage) return null;
 
-	const { dark, light } = siteConfig.projectLogo;
-	const currentTheme = mounted ? resolvedTheme : undefined;
-	const logoSrc = currentTheme === "dark" ? dark : light;
+	const logoSrc = mounted && resolvedTheme === "dark" ? projectConfig.logoDark : projectConfig.logoLight;
 
 	const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
@@ -85,9 +81,10 @@ export function LandingNavbar() {
 		>
 			<Image
 				src={logoSrc || "/placeholder.svg"}
-				alt="ThaparGoLogo"
+				alt="Ridezon Logo"
 				width={110}
 				height={110}
+				priority
 			/>
 		</Link>
 	);
@@ -97,7 +94,7 @@ export function LandingNavbar() {
 		{ href: "about", label: "About" },
 		{ href: "faq", label: "FAQ" },
 		{
-			href: siteConfig.projectSrc,
+			href: projectConfig.projectSrc,
 			label: "GitHub",
 			icon: <Github size={16} />,
 			isExternal: true,
@@ -106,7 +103,7 @@ export function LandingNavbar() {
 
 	return (
 		<motion.header
-			className="sticky top-0 z-50 backdrop-blur-md border-b border-white/10 dark:border-white/5"
+			className="sticky top-0 z-50 backdrop-blur-md border-b border-border bg-background/80"
 			initial={{ opacity: 0, y: -20 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ duration: 0.5 }}
@@ -124,7 +121,7 @@ export function LandingNavbar() {
 									href={link.href}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1 hover:scale-105 transform duration-200"
+									className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors flex items-center gap-1 hover:scale-105 transform duration-200"
 								>
 									{link.icon}
 									{link.label}
@@ -133,7 +130,7 @@ export function LandingNavbar() {
 								<button
 									key={link.label}
 									onClick={() => handleSectionNavigate(link.href)}
-									className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1 hover:scale-105 transform duration-200"
+									className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors flex items-center gap-1 hover:scale-105 transform duration-200"
 								>
 									{link.icon}
 									{link.label}
@@ -147,7 +144,7 @@ export function LandingNavbar() {
 					{isAuthenticated ? (
 						<Button
 							variant="ghost"
-							className="flex items-center gap-2 hover:scale-105 transform transition-all duration-200"
+							className="flex items-center gap-2 hover:scale-105 transform transition-all duration-200 text-muted-foreground hover:text-foreground"
 							onClick={handleLogout}
 						>
 							<LogOut className="h-4 w-4" />
@@ -158,13 +155,13 @@ export function LandingNavbar() {
 							<Button
 								variant="ghost"
 								onClick={() => router.push("/login")}
-								className="bg-white/10 dark:bg-black/10 hover:scale-105 transform transition-all duration-200"
+								className="hover:bg-accent hover:text-accent-foreground hover:scale-105 transform transition-all duration-200"
 							>
 								Login
 							</Button>
 							<Button
 								variant="default"
-								className="bg-primary hover:bg-primary/90 hover:scale-105 transform transition-all duration-200"
+								className="bg-primary hover:bg-primary/90 text-primary-foreground hover:scale-105 transform transition-all duration-200 shadow-md shadow-primary/20"
 								onClick={() => router.push("/signup")}
 							>
 								Sign Up
@@ -180,7 +177,7 @@ export function LandingNavbar() {
 						variant="ghost"
 						size="icon"
 						onClick={toggleMenu}
-						className="relative"
+						className="relative hover:bg-accent"
 					>
 						<AnimatePresence mode="wait">
 							{isMenuOpen ? (
@@ -217,7 +214,7 @@ export function LandingNavbar() {
 						animate={{ opacity: 1, height: "auto" }}
 						exit={{ opacity: 0, height: 0 }}
 						transition={{ duration: 0.3 }}
-						className="md:hidden backdrop-blur-md border-b border-white/10 dark:border-white/5"
+						className="md:hidden backdrop-blur-md border-b border-border bg-background/95"
 					>
 						<div className="container mx-auto p-4 flex flex-col gap-3">
 							{navLinks.map((link) =>
@@ -227,7 +224,7 @@ export function LandingNavbar() {
 										href={link.href}
 										target="_blank"
 										rel="noopener noreferrer"
-										className="p-2 hover:bg-white/10 dark:hover:bg-black/10 rounded-md transition-colors flex items-center gap-2"
+										className="p-2 hover:bg-accent rounded-md transition-colors flex items-center gap-2 text-foreground"
 										onClick={toggleMenu}
 									>
 										{link.icon}
@@ -240,7 +237,7 @@ export function LandingNavbar() {
 											handleSectionNavigate(link.href);
 											toggleMenu();
 										}}
-										className="p-2 hover:bg-white/10 dark:hover:bg-black/10 rounded-md transition-colors flex items-center gap-2 text-left"
+										className="p-2 hover:bg-accent rounded-md transition-colors flex items-center gap-2 text-left text-foreground"
 									>
 										{link.icon}
 										{link.label}
@@ -248,20 +245,20 @@ export function LandingNavbar() {
 								),
 							)}
 
-							<div className="border-t border-white/10 dark:border-white/5 my-2 pt-2" />
+							<div className="border-t border-border my-2 pt-2" />
 
 							{isAuthenticated ? (
 								<>
 									<Button
 										variant="outline"
-										className="flex items-center gap-2 justify-start border-white/20 dark:border-white/10 bg-transparent"
+										className="flex items-center gap-2 justify-start border-input bg-transparent text-foreground hover:bg-accent"
 									>
 										<User className="h-4 w-4" />
 										<span>Profile</span>
 									</Button>
 									<Button
 										variant="outline"
-										className="flex items-center gap-2 justify-start text-destructive border-white/20 dark:border-white/10 bg-transparent"
+										className="flex items-center gap-2 justify-start text-destructive border-input bg-transparent hover:bg-destructive/10"
 										onClick={() => {
 											toggleMenu();
 											handleLogout();
@@ -275,7 +272,7 @@ export function LandingNavbar() {
 								<>
 									<Button
 										variant="outline"
-										className="w-full bg-transparent"
+										className="w-full bg-transparent border-input hover:bg-accent text-foreground"
 										onClick={() => {
 											toggleMenu();
 											router.push("/login");
@@ -285,7 +282,7 @@ export function LandingNavbar() {
 									</Button>
 									<Button
 										variant="default"
-										className="bg-primary hover:bg-primary/90 w-full"
+										className="bg-primary hover:bg-primary/90 text-primary-foreground w-full shadow-md"
 										onClick={() => {
 											toggleMenu();
 											router.push("/signup");

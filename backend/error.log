@@ -1,0 +1,15 @@
+C:\Users\aksha\Projects\Personal\Thapar-Go\backend\node_modules\@prisma\client\src\runtime\utils\validatePrismaClientOptions.ts:203
+    throw new PrismaClientConstructorValidationError(
+          ^
+PrismaClientConstructorValidationError: Using engine type "client" requires either "adapter" or "accelerateUrl" to be provided to PrismaClient constructor.
+Read more at https://pris.ly/d/client-constructor
+    at validateDependentOptions (C:\Users\aksha\Projects\Personal\Thapar-Go\backend\node_modules\@prisma\client\src\runtime\utils\validatePrismaClientOptions.ts:203:11)
+    at validatePrismaClientOptions (C:\Users\aksha\Projects\Personal\Thapar-Go\backend\node_modules\@prisma\client\src\runtime\utils\validatePrismaClientOptions.ts:220:3)
+    at new t (C:\Users\aksha\Projects\Personal\Thapar-Go\backend\node_modules\@prisma\client\src\runtime\getPrismaClient.ts:242:9)
+    at Object.<anonymous> (C:\Users\aksha\Projects\Personal\Thapar-Go\backend\src\prisma.ts:3:16)
+    at Module._compile (node:internal/modules/cjs/loader:1706:14)
+    at Module.m._compile (C:\Users\aksha\Projects\Personal\Thapar-Go\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1839:10
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\aksha\Projects\Personal\Thapar-Go\backend\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1441:32)
+    at Function._load (node:internal/modules/cjs/loader:1263:12)

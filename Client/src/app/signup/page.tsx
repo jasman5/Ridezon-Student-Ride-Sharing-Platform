@@ -232,7 +232,7 @@ export default function SignupPage() {
 								<CardFooter className="flex flex-col items-center gap-3">
 									<p className="text-center text-sm font-semibold">
 										Only{" "}
-										<span className="text-primary">@thapar.edu</span>{" "}
+										<span className="text-primary">@ridezon.com</span>{" "}
 										email users allowed
 									</p>
 

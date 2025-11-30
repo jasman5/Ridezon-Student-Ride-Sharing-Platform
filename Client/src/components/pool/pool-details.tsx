@@ -8,6 +8,7 @@ import {
 	UserIcon as Female,
 	Phone,
 	Edit,
+	Trash2,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -54,6 +55,7 @@ export function PoolDetails({
 }: Readonly<PoolDetailsProps>) {
 	const [isJoining, setIsJoining] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);
+	const [isDeleting, setIsDeleting] = useState(false);
 	const { toast } = useToast();
 
 	if (!pool) return null;
@@ -99,7 +101,7 @@ export function PoolDetails({
 				description: error instanceof Error ? error.message : String(error),
 				variant: "destructive",
 			});
-			
+
 		} finally {
 			setIsJoining(false);
 		}
@@ -111,6 +113,34 @@ export function PoolDetails({
 		// Notify parent component that pool was updated
 		if (onPoolUpdated) {
 			onPoolUpdated();
+		}
+	};
+
+	const handleDeletePool = async () => {
+		if (!pool) return;
+
+		try {
+			setIsDeleting(true);
+			await poolApi.deletePool(pool.id);
+
+			toast({
+				title: "Success",
+				description: "Pool deleted successfully",
+			});
+
+			onOpenChange(false);
+			if (onPoolUpdated) {
+				onPoolUpdated();
+			}
+		} catch (error) {
+			console.error("Error deleting pool:", error);
+			toast({
+				title: "Error",
+				description: "Failed to delete pool",
+				variant: "destructive",
+			});
+		} finally {
+			setIsDeleting(false);
 		}
 	};
 
@@ -134,11 +164,10 @@ export function PoolDetails({
 									</span>
 									{creatorGender && (
 										<Badge
-											className={`${
-												creatorGender.toLowerCase() === "female"
-													? "bg-pink-500/80"
-													: "bg-blue-500/80"
-											}`}
+											className={`${creatorGender.toLowerCase() === "female"
+												? "bg-pink-500/80"
+												: "bg-blue-500/80"
+												}`}
 											variant="outline"
 										>
 											{creatorGender}
@@ -310,23 +339,32 @@ export function PoolDetails({
 								/>
 							) : (
 								<>
-									<Button
-										variant="outline"
-										onClick={() => onOpenChange(false)}
-										className="border-white/20 dark:border-white/10"
-									>
-										Close
-									</Button>
-
 									{isCurrentUserCreator && (
-										<Button
-											variant="outline"
-											onClick={() => setIsEditing(true)}
-											className="border-white/20 dark:border-white/10 flex items-center gap-1"
-										>
-											<Edit size={16} />
-											Edit
-										</Button>
+										<>
+											<Button
+												variant="destructive"
+												onClick={handleDeletePool}
+												className="flex items-center gap-1"
+												disabled={isDeleting}
+											>
+												{isDeleting ? (
+													<div className="h-4 w-4 border-2 border-white/50 border-t-transparent rounded-full animate-spin" />
+												) : (
+													<>
+														<Trash2 size={16} />
+														Delete
+													</>
+												)}
+											</Button>
+											<Button
+												variant="outline"
+												onClick={() => setIsEditing(true)}
+												className="border-white/20 dark:border-white/10 flex items-center gap-1"
+											>
+												<Edit size={16} />
+												Edit
+											</Button>
+										</>
 									)}
 
 									{!isCurrentUserCreator && (
@@ -351,4 +389,5 @@ export function PoolDetails({
 			)}
 		</AnimatePresence>
 	);
+
 }

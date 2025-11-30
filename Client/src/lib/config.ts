@@ -1,23 +1,30 @@
-export const siteConfig = {
-	apiUrl: "https://api.example.com",
-	creators: {
-		himanishPuri: {
-			name: "Himanish Puri",
-			linkedInUrl: "https://www.linkedin.com/in/himanish-puri-hk108/",
-			githubUrl: "https://github.com/himanishpuri",
-			email: "hpuri_be23@thapar.edu",
+export const projectConfig = {
+	projectId: "ridezon",
+	projectName: "Ridezon",
+	projectDescription: "Ridezon is a ride sharing platform for students.",
+	projectUrl: "https://ridezon.com",
+	projectImage: "https://ridezon.com/og.png",
+	projectLogo: "/lightridezon.png",
+	logoLight: "/lightridezon.png",
+	logoDark: "/darkridezon.png",
+	projectEmail: "support@ridezon.com",
+	projectTwitter: "@ridezon",
+	projectGithub: "https://github.com/ridezon",
+	projectSrc: "https://github.com/ridezon/ridezon",
+	team: [
+		{
+			name: "Harsh Puri",
+			role: "Full Stack Developer",
+			email: "hpuri@ridezon.com",
+			github: "https://github.com/harshpuri",
+			twitter: "https://twitter.com/harshpuri",
 		},
-		lakshaySawhney: {
+		{
 			name: "Lakshay Sawhney",
-			linkedInUrl: "https://www.linkedin.com/in/lakshay-sawhney/",
-			githubUrl: "https://github.com/lakshaysawhney",
-			email: "lsawhney_be23@thapar.edu",
+			role: "Full Stack Developer",
+			email: "lsawhney@ridezon.com",
+			github: "https://github.com/lakshaysawhney",
+			twitter: "https://twitter.com/lakshaysawhney",
 		},
-	},
-	projectSrc: "https://github.com/lakshaysawhney/Thapar-Go",
-	projectLogo: {
-		dark: "/thapargo_white.png",
-		light: "/thapargo.png",
-	}
+	],
 };
-

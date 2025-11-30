@@ -59,7 +59,7 @@ export function CreatePoolForm({
 }: Readonly<CreatePoolFormProps>) {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const { toast } = useToast();
-	const [useCustomLocations, setUseCustomLocations] = useState(false);
+	const [useCustomLocations, setUseCustomLocations] = useState(true);
 
 	// Initialize the form
 	const form = useForm<CreatePoolFormValues>({
@@ -233,8 +233,8 @@ export function CreatePoolForm({
 								className="text-xs border-white/20 dark:border-white/10"
 							>
 								{useCustomLocations
-									? "Use dropdown locations and Transport Mode"
-									: "Enter custom locations and Transport Mode"}
+									? "Select from existing locations"
+									: "Enter custom locations"}
 							</Button>
 						</div>
 					</div>
@@ -277,7 +277,7 @@ export function CreatePoolForm({
 												className={cn(
 													"bg-white/20 dark:bg-black/20 border-white/20 dark:border-white/10",
 													!isarrival_timeValid &&
-														"border-red-500 focus-visible:ring-red-500",
+													"border-red-500 focus-visible:ring-red-500",
 												)}
 											/>
 										</FormControl>
@@ -394,22 +394,22 @@ export function CreatePoolForm({
 												className={cn(
 													"bg-white/20 dark:bg-black/20 border-white/20 dark:border-white/10",
 													field.value >
-														form.getValues("total_persons") &&
-														"border-red-500 focus-visible:ring-red-500",
+													form.getValues("total_persons") &&
+													"border-red-500 focus-visible:ring-red-500",
 												)}
 											/>
 										</FormControl>
 										{field.value >
 											form.getValues("total_persons") && (
-											<motion.p
-												className="text-sm font-medium text-red-500 flex items-center gap-1 mt-1"
-												initial={{ opacity: 0, y: -10 }}
-												animate={{ opacity: 1, y: 0 }}
-											>
-												<AlertCircle size={14} />
-												Cannot exceed total persons
-											</motion.p>
-										)}
+												<motion.p
+													className="text-sm font-medium text-red-500 flex items-center gap-1 mt-1"
+													initial={{ opacity: 0, y: -10 }}
+													animate={{ opacity: 1, y: 0 }}
+												>
+													<AlertCircle size={14} />
+													Cannot exceed total persons
+												</motion.p>
+											)}
 										<FormMessage />
 									</FormItem>
 								)}
@@ -534,7 +534,6 @@ export function CreatePoolForm({
 						className="bg-primary hover:bg-primary/90"
 						glowColor="rgba(255, 0, 0, 0.3)"
 						disabled={isSubmitting}
-						onClick={() => onSubmit(form.getValues())}
 					>
 						{isSubmitting ? (
 							<div className="h-5 w-5 border-2 border-primary-foreground/50 border-t-transparent rounded-full animate-spin" />
