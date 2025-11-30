@@ -121,17 +121,17 @@ export function PoolDetails({
 		]),
 	);
 
-	const matchesPassenger = Array.isArray((pool as any).passengers)
-		? (pool as any).passengers.some((passenger: any) =>
+	const matchesPassenger = Array.isArray(pool.passengers)
+		? pool.passengers.some((passenger) =>
 			matchesIdentifiers([
-				passenger?.id,
-				passenger?.userId,
-				passenger?.email,
-				passenger?.fullName,
-				passenger?.phone,
-				passenger?.user?.id,
-				passenger?.user?.email,
-				passenger?.user?.fullName,
+				passenger.id,
+				passenger.userId,
+				passenger.email,
+				passenger.fullName,
+				passenger.phone,
+				passenger.user?.id,
+				passenger.user?.email,
+				passenger.user?.fullName,
 			]),
 		)
 		: false;

@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -14,10 +14,21 @@ interface User {
     email?: string;
 }
 
+export interface CreateExpenseData {
+    description: string;
+    amount: number;
+    type: string;
+    splitDetails: Record<string, {
+        amount: number;
+        settled: boolean;
+        percentage?: number;
+    }>;
+}
+
 interface AddExpenseModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onAdd: (expense: any) => void;
+    onAdd: (expense: CreateExpenseData) => void;
     members: User[];
     currentUser: User;
 }
@@ -74,7 +85,7 @@ export function AddExpenseModal({ isOpen, onClose, onAdd, members, currentUser }
     const handleSubmit = () => {
         if (!validateSplit()) return;
 
-        const finalSplitDetails: Record<string, any> = {};
+        const finalSplitDetails: Record<string, { amount: number; settled: boolean; percentage?: number }> = {};
         const totalAmount = parseFloat(amount);
 
         if (splitType === "EQUAL") {

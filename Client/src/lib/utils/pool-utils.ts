@@ -66,7 +66,7 @@ export const formatDateForInput = (dateString: string | undefined): string => {
 		const minutes = String(date.getMinutes()).padStart(2, "0");
 
 		return `${year}-${month}-${day}T${hours}:${minutes}`;
-	} catch (e) {
+	} catch {
 		return "";
 	}
 };

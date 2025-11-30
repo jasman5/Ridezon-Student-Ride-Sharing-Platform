@@ -3,15 +3,12 @@
 import type React from "react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Github, LogOut, User } from "lucide-react";
+import { Menu, X, LogOut, User } from "lucide-react";
 import { authApi } from "@/lib";
-import { projectConfig } from "@/lib/config";
 import { gsap } from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 
@@ -34,17 +31,11 @@ export function LandingNavbar() {
 	const isPoolPage = pathname === "/pools" || pathname?.startsWith("/groups");
 	const isAuthPage = pathname === "/login" || pathname === "/signup";
 
-	const { resolvedTheme } = useTheme();
-	const [mounted, setMounted] = useState(false);
-
 	useEffect(() => {
-		setMounted(true);
 		setIsAuthenticated(!!sessionStorage.getItem("access"));
 	}, []);
 
 	if (isPoolPage) return null;
-
-	const logoSrc = mounted && resolvedTheme === "dark" ? projectConfig.logoDark : projectConfig.logoLight;
 
 	const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 

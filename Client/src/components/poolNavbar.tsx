@@ -4,15 +4,12 @@ import type React from "react";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Menu, X, LogOut, Home, PlusCircle } from "lucide-react";
-import { useTheme } from "next-themes";
 import { authApi } from "@/lib";
-import { projectConfig } from "@/lib/config";
 
 interface NavbarProps {
 	onCreatePool?: () => void;
@@ -39,17 +36,6 @@ export function PoolNavbar({ onCreatePool }: Readonly<NavbarProps>) {
 		const accessToken = sessionStorage.getItem("access");
 		setIsAuthenticated(!!accessToken);
 	}, []);
-
-
-
-	const { resolvedTheme } = useTheme();
-	const [mounted, setMounted] = useState(false);
-
-	useEffect(() => {
-		setMounted(true);
-	}, []);
-
-	const logoSrc = mounted && resolvedTheme === "dark" ? projectConfig.logoDark : projectConfig.logoLight;
 
 	const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 

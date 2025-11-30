@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Plus, Receipt, CheckCircle2, AlertCircle } from "lucide-react";
+import { Plus, Receipt, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { AddExpenseModal } from "./AddExpenseModal";
+import { AddExpenseModal, CreateExpenseData } from "./AddExpenseModal";
 import { ExpenseDetailsModal } from "./ExpenseDetailsModal";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -56,7 +56,7 @@ export function ExpenseTracker({ groupId, currentUser, members }: ExpenseTracker
         fetchExpenses();
     }, [fetchExpenses]);
 
-    const handleAddExpense = async (expenseData: any) => {
+    const handleAddExpense = async (expenseData: CreateExpenseData) => {
         try {
             const response = await fetch(`https://ridezon.mlsctiet.com/api/groups/${groupId}/expenses`, {
                 method: "POST",

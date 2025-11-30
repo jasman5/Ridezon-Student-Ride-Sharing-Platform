@@ -174,16 +174,16 @@ export default function PoolDashboard() {
 				});
 			});
 
-			const matchesPassenger = Array.isArray((pool as any).passengers)
-				? (pool as any).passengers.some((passenger: any) => {
+			const matchesPassenger = Array.isArray(pool.passengers)
+				? pool.passengers.some((passenger) => {
 					const candidates = [
-						passenger?.id,
-						passenger?.email,
-						passenger?.fullName,
-						passenger?.phone,
-						passenger?.userId,
-						passenger?.user?.id,
-						passenger?.user?.email,
+						passenger.id,
+						passenger.email,
+						passenger.fullName,
+						passenger.phone,
+						passenger.userId,
+						passenger.user?.id,
+						passenger.user?.email,
 					];
 
 					return candidates.some((candidate) => {
@@ -200,7 +200,7 @@ export default function PoolDashboard() {
 
 			const isCreator =
 				normalize(pool.created_by?.email) === normalizedUserEmail ||
-				normalize((pool as any).creator?.email) === normalizedUserEmail;
+				normalize(pool.creator?.email) === normalizedUserEmail;
 
 			return !isCreator && (matchesMember || matchesPassenger);
 		});

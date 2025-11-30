@@ -69,17 +69,36 @@ export function PoolCard({ pool, onClick, currentUser }: Readonly<PoolCardProps>
 
 	// Determine occupied seats preferring backend count, otherwise fall back to
 	// the union of members and passengers arrays to capture recently joined riders.
-	const passengersArray = Array.isArray((pool as any).passengers)
-		? (pool as any).passengers
+	// Determine occupied seats preferring backend count, otherwise fall back to
+	// the union of members and passengers arrays to capture recently joined riders.
+	const passengersArray = Array.isArray(pool.passengers)
+		? pool.passengers
 		: [];
 
 	const uniqueParticipantIds = new Set<string>();
 
 	[members, passengersArray].forEach((list) => {
-		list?.forEach((entry: any) => {
-			const identifier = (entry?.id ?? entry?.userId ?? entry?.user?.id ?? entry?.email ?? entry?.full_name ?? entry).toString();
+		// list is either PoolMembers[] or Pool['passengers']
+		// We need to handle the different structures safely
+		if (!list) return;
+
+		list.forEach((entry) => {
+			// entry can be PoolMembers or passenger object
+			// PoolMembers: id, full_name, email, ...
+			// Passenger: id, fullName, userId, email, user { id, email } ...
+
+			let identifier = "";
+
+			if ('full_name' in entry) {
+				// PoolMembers
+				identifier = entry.id || entry.email || entry.full_name;
+			} else {
+				// Passenger
+				identifier = entry.id || entry.userId || entry.user?.id || entry.email || entry.fullName;
+			}
+
 			if (identifier) {
-				uniqueParticipantIds.add(identifier.toLowerCase());
+				uniqueParticipantIds.add(identifier.toString().toLowerCase());
 			}
 		});
 	});

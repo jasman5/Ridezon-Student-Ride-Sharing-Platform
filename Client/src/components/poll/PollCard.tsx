@@ -4,16 +4,15 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Check, User } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 
-interface PollOption {
+export interface PollOption {
     id: string;
     text: string;
     votes: { userId: string }[];
 }
 
-interface Poll {
+export interface Poll {
     id: string;
     question: string;
     createdAt: string;

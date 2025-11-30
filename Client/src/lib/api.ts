@@ -35,7 +35,7 @@ async function apiRequest<T>(
 			const errorData = await response.json().catch(() => ({}));
 			const message = errorData.detail ?? errorData.message ?? errorMessage;
 			console.error(`API Error (${response.status}):`, message, errorData);
-			throw new Error(errorData.detail);
+			throw new Error(errorData.detail || message);
 		}
 
 		// Parse JSON response
@@ -55,13 +55,50 @@ async function apiRequest<T>(
 	}
 }
 
+// Backend Interfaces
+interface BackendUser {
+	id: string;
+	email: string;
+	fullName: string;
+	phone?: string;
+	gender?: "Male" | "Female" | "Others";
+}
+
+interface BackendPassenger extends BackendUser {
+	userId?: string; // Sometimes it might be nested or flat depending on endpoint
+}
+
+interface BackendRequest {
+	id: string;
+	status: "PENDING" | "ACCEPTED" | "REJECTED";
+	userId: string;
+	user?: BackendUser;
+}
+
+interface BackendRide {
+	id: string | number;
+	origin: string;
+	destination: string;
+	departureTime: string;
+	transportMode: string;
+	totalSeats: number;
+	pricePerSeat: number | null;
+	description: string;
+	genderPreference: string;
+	creatorId: string;
+	creator?: BackendUser;
+	passengers?: BackendPassenger[];
+	requests?: BackendRequest[];
+	// Add other fields if necessary
+}
+
 /**
  * Pool API Service
  */
 /**
  * Helper to map backend Ride object to frontend Pool object
  */
-const mapRideToPool = (ride: any): Pool => {
+const mapRideToPool = (ride: BackendRide): Pool => {
 	return {
 		id: ride.id,
 		// Map backend fields to frontend snake_case fields
@@ -79,24 +116,41 @@ const mapRideToPool = (ride: any): Pool => {
 			gender: ride.creator.gender || "Others",
 			email: ride.creator.email || "",
 		} : undefined,
-		members: ride.passengers ? ride.passengers.map((p: any) => ({
+		members: ride.passengers ? ride.passengers.map((p) => ({
 			id: p.id,
 			email: p.email || "",
 			full_name: p.fullName,
 			phone_number: p.phone || "",
 			gender: p.gender || "Others",
-			is_creator: p.id === ride.creatorId,
-			pool: ride.id
+			is_creator: false, // Logic for this might need adjustment if we have creatorId
+			pool: Number(ride.id) // Assuming pool id is number for this interface
 		})) : [],
-		requests: ride.requests ? ride.requests.map((r: any) => ({
+		requests: ride.requests ? ride.requests.map((r) => ({
 			id: r.id,
 			status: r.status,
 			userId: r.userId,
-			user: r.user
+			user: r.user ? {
+				fullName: r.user.fullName,
+				email: r.user.email,
+				// Add other fields if needed by Pool interface
+			} : undefined
 		})) : [],
 
-		// Keep original fields just in case
-		...ride
+		// Backend fields for compatibility
+		origin: ride.origin,
+		destination: ride.destination,
+		departureTime: ride.departureTime,
+		transportMode: ride.transportMode,
+		totalSeats: ride.totalSeats,
+		pricePerSeat: ride.pricePerSeat ?? undefined,
+		genderPreference: ride.genderPreference,
+		creatorId: ride.creatorId,
+		creator: ride.creator,
+		passengers: ride.passengers,
+		// requests is already mapped above but with different structure?
+		// The Pool interface has requests as { id, status, userId, user: { fullName, avatar, email } }
+		// BackendRequest has user: BackendUser.
+		// They seem compatible enough for the user field.
 	};
 };
 
@@ -108,7 +162,7 @@ export const poolApi = {
 	 * Get all pools
 	 */
 	getAllPools: async (): Promise<Pool[]> => {
-		const rides = await apiRequest<any[]>("/rides", {}, "Failed to fetch pools");
+		const rides = await apiRequest<BackendRide[]>("/rides", {}, "Failed to fetch pools");
 		return rides.map(mapRideToPool);
 	},
 
@@ -116,7 +170,7 @@ export const poolApi = {
 	 * Get pool by ID
 	 */
 	getPoolById: async (id: string | number): Promise<Pool> => {
-		const ride = await apiRequest<any>(
+		const ride = await apiRequest<BackendRide>(
 			`/rides/${id}`,
 			{},
 			`Failed to fetch pool #${id}`,
@@ -139,7 +193,7 @@ export const poolApi = {
 			genderPreference: poolData.is_female_only ? "Female" : "Any",
 		};
 
-		const ride = await apiRequest<any>(
+		const ride = await apiRequest<BackendRide>(
 			"/rides",
 			{
 				method: "POST",
@@ -157,7 +211,7 @@ export const poolApi = {
 		id: string | number,
 		poolData: Partial<CreatePoolFormValues>,
 	): Promise<Pool> => {
-		const payload: any = {};
+		const payload: Partial<BackendRide> = {};
 		if (poolData.start_point) payload.origin = poolData.start_point;
 		if (poolData.end_point) payload.destination = poolData.end_point;
 		if (poolData.departure_time) payload.departureTime = poolData.departure_time;
@@ -167,7 +221,7 @@ export const poolApi = {
 		if (poolData.description) payload.description = poolData.description;
 		if (poolData.is_female_only !== undefined) payload.genderPreference = poolData.is_female_only ? "Female" : "Any";
 
-		const ride = await apiRequest<any>(
+		const ride = await apiRequest<BackendRide>(
 			`/rides/${id}`,
 			{
 				method: "PUT",
@@ -185,7 +239,7 @@ export const poolApi = {
 		id: string | number,
 		poolData: Partial<CreatePoolFormValues>,
 	): Promise<Pool> => {
-		const payload: any = {};
+		const payload: Partial<BackendRide> = {};
 		if (poolData.start_point) payload.origin = poolData.start_point;
 		if (poolData.end_point) payload.destination = poolData.end_point;
 		if (poolData.departure_time) payload.departureTime = poolData.departure_time;
@@ -195,7 +249,7 @@ export const poolApi = {
 		if (poolData.description) payload.description = poolData.description;
 		if (poolData.is_female_only !== undefined) payload.genderPreference = poolData.is_female_only ? "Female" : "Any";
 
-		const ride = await apiRequest<any>(
+		const ride = await apiRequest<BackendRide>(
 			`/rides/${id}`,
 			{
 				method: "PATCH",

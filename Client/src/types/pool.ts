@@ -35,6 +35,15 @@ export interface Pool {
 		avatar?: string;
 		phone?: string;
 		gender?: string;
+		// Added fields to match backend response and usage
+		userId?: string;
+		email?: string;
+		user?: {
+			id: string;
+			email: string;
+			fullName: string;
+		};
+		status?: string;
 	}[];
 	requests?: {
 		id: string;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Plus, BarChart2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,7 +9,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import { PollCard } from "./PollCard";
+import { PollCard, Poll } from "./PollCard";
 import { CreatePollModal } from "./CreatePollModal";
 import { useToast } from "@/hooks/use-toast";
 import { CurrentUserDetailsProps } from "@/lib/auth";
@@ -20,12 +20,12 @@ interface PollsTabProps {
 }
 
 export function PollsTab({ groupId, currentUser }: PollsTabProps) {
-    const [polls, setPolls] = useState<any[]>([]);
+    const [polls, setPolls] = useState<Poll[]>([]);
     const [isCreateOpen, setIsCreateOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const { toast } = useToast();
 
-    const fetchPolls = async () => {
+    const fetchPolls = useCallback(async () => {
         try {
             const response = await fetch(`https://ridezon.mlsctiet.com/api/groups/${groupId}/polls`, {
                 headers: {
@@ -41,11 +41,11 @@ export function PollsTab({ groupId, currentUser }: PollsTabProps) {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [groupId]);
 
     useEffect(() => {
         fetchPolls();
-    }, [groupId]);
+    }, [fetchPolls]);
 
     const handleCreatePoll = async (data: { question: string; options: string[] }) => {
         try {
