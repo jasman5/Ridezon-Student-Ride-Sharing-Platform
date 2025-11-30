@@ -7,6 +7,7 @@ const router = (0, express_1.Router)();
 router.post("/", auth_middleware_1.authenticate, ride_controller_1.createRide);
 router.get("/", ride_controller_1.getRides);
 router.get("/:id", ride_controller_1.getRideById);
+router.put("/:id", auth_middleware_1.authenticate, ride_controller_1.updateRide);
 router.delete("/:id", auth_middleware_1.authenticate, ride_controller_1.deleteRide);
 router.post("/:id/join", auth_middleware_1.authenticate, ride_controller_1.joinRide);
 router.put("/:id/requests/:requestId", auth_middleware_1.authenticate, ride_controller_1.respondToRequest);

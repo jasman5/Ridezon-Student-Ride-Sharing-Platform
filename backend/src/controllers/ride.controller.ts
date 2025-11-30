@@ -82,14 +82,7 @@ export const deleteRide = async (req: AuthRequest, res: Response) => {
         if (!ride) return res.status(404).json({ message: "Ride not found" });
 
         if (ride.creatorId !== userId) return res.status(403).json({ message: "Not authorized to delete this ride" });
-
-        // Delete group first if exists (cascade should handle it but good to be safe or if cascade not set)
-        // Prisma cascade delete on Ride -> Group is not explicit in schema unless configured.
-        // Actually, let's just delete the ride, and if we need to delete group manually we will.
-        // For now, assume cascade or manual deletion.
-        // Let's delete the group first to be safe.
         if (ride.group) {
-            // Need to fetch group id first or use deleteMany
             await prisma.group.delete({ where: { rideId: id } }).catch(() => { });
         }
 
@@ -212,5 +205,39 @@ export const respondToRequest = async (req: AuthRequest, res: Response) => {
         res.status(200).json(updatedRequest);
     } catch (error) {
         res.status(500).json({ message: "Error responding to request", error });
+    }
+};
+
+export const leaveRide = async (req: AuthRequest, res: Response) => {
+    try {
+        const { id } = req.params;
+        const userId = req.user.id;
+
+        const ride = await prisma.ride.findUnique({
+            where: { id },
+            include: { passengers: true }
+        });
+
+        if (!ride) return res.status(404).json({ message: "Ride not found" });
+        if (ride.creatorId === userId) {
+            return res.status(400).json({ message: "Creators cannot leave the ride, they must delete it" });
+        }
+
+        const isPassenger = ride.passengers.some(p => p.id === userId);
+        if (!isPassenger) {
+            return res.status(400).json({ message: "You are not a passenger in this ride" });
+        }
+        await prisma.ride.update({
+            where: { id },
+            data: {
+                passengers: {
+                    disconnect: { id: userId }
+                }
+            }
+        });
+
+        res.status(200).json({ message: "Successfully left the ride" });
+    } catch (error) {
+        res.status(500).json({ message: "Error leaving ride", error });
     }
 };

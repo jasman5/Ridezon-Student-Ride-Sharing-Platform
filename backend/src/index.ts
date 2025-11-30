@@ -23,9 +23,11 @@ const io = new Server(httpServer, {
 import helmet from "helmet";
 import { apiLimiter } from "./middlewares/rateLimit.middleware";
 
-app.use(helmet());
+app.use(helmet({
+    crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" }
+}));
 app.use(cors({
-    origin: "http://localhost:3000", // Restrict to frontend
+    origin: ["http://localhost:3000", "https://ridezon.akshatnathani.me"], // Restrict to frontend
     credentials: true,
 }));
 app.use(express.json());

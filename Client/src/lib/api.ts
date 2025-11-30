@@ -291,6 +291,19 @@ export const poolApi = {
 	},
 
 	/**
+	 * Leave a pool
+	 */
+	leavePool: async (id: string | number): Promise<{ message: string }> => {
+		return apiRequest<{ message: string }>(
+			`/rides/${id}/leave`,
+			{
+				method: "POST",
+			},
+			"Failed to leave pool",
+		);
+	},
+
+	/**
 	 * Respond to join request
 	 */
 	respondToRequest: async (rideId: string, requestId: string, status: "ACCEPTED" | "REJECTED"): Promise<void> => {

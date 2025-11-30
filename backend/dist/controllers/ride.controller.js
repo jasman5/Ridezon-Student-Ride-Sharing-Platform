@@ -3,17 +3,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.respondToRequest = exports.joinRide = exports.deleteRide = exports.getRideById = exports.getRides = exports.createRide = void 0;
+exports.respondToRequest = exports.joinRide = exports.updateRide = exports.deleteRide = exports.getRideById = exports.getRides = exports.createRide = void 0;
 const prisma_1 = __importDefault(require("../prisma"));
 const createRide = async (req, res) => {
     try {
-        const { origin, destination, departureTime, transportMode, totalSeats, pricePerSeat, description, genderPreference } = req.body;
+        const { origin, destination, departureTime, arrivalTime, transportMode, totalSeats, pricePerSeat, description, genderPreference } = req.body;
         const userId = req.user.id;
         const ride = await prisma_1.default.ride.create({
             data: {
                 origin,
                 destination,
                 departureTime: new Date(departureTime),
+                arrivalTime: arrivalTime ? new Date(arrivalTime) : null,
                 transportMode,
                 totalSeats,
                 pricePerSeat,
@@ -37,8 +38,9 @@ const getRides = async (req, res) => {
     try {
         const rides = await prisma_1.default.ride.findMany({
             include: {
-                creator: { select: { fullName: true, avatar: true, gender: true, phone: true } },
+                creator: { select: { fullName: true, avatar: true, gender: true, phone: true, email: true } },
                 passengers: { select: { fullName: true, avatar: true, gender: true, phone: true } },
+                requests: { include: { user: { select: { fullName: true, avatar: true, email: true } } } },
                 group: true
             },
             orderBy: { departureTime: "asc" },
@@ -56,7 +58,7 @@ const getRideById = async (req, res) => {
         const ride = await prisma_1.default.ride.findUnique({
             where: { id },
             include: {
-                creator: { select: { fullName: true, avatar: true, phone: true, gender: true } },
+                creator: { select: { fullName: true, avatar: true, phone: true, gender: true, email: true } },
                 passengers: { select: { fullName: true, avatar: true, gender: true, phone: true } },
                 requests: { include: { user: { select: { fullName: true, avatar: true } } } },
                 group: true
@@ -97,6 +99,42 @@ const deleteRide = async (req, res) => {
     }
 };
 exports.deleteRide = deleteRide;
+const updateRide = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { origin, destination, departureTime, arrivalTime, transportMode, totalSeats, pricePerSeat, description, genderPreference } = req.body;
+        const userId = req.user.id;
+        const ride = await prisma_1.default.ride.findUnique({ where: { id } });
+        if (!ride)
+            return res.status(404).json({ message: "Ride not found" });
+        if (ride.creatorId !== userId)
+            return res.status(403).json({ message: "Not authorized to update this ride" });
+        const updatedRide = await prisma_1.default.ride.update({
+            where: { id },
+            data: {
+                origin,
+                destination,
+                departureTime: departureTime ? new Date(departureTime) : undefined,
+                arrivalTime: arrivalTime ? new Date(arrivalTime) : undefined,
+                transportMode,
+                totalSeats,
+                pricePerSeat,
+                description,
+                genderPreference
+            },
+            include: {
+                creator: { select: { fullName: true, avatar: true, phone: true, gender: true, email: true } },
+                passengers: { select: { fullName: true, avatar: true, gender: true, phone: true } },
+                group: true
+            }
+        });
+        res.status(200).json(updatedRide);
+    }
+    catch (error) {
+        res.status(500).json({ message: "Error updating ride", error });
+    }
+};
+exports.updateRide = updateRide;
 const joinRide = async (req, res) => {
     try {
         const { id } = req.params;

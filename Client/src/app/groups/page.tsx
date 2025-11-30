@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import { MessageCircle, Receipt, MapPin, Users, Car, BarChart2 } from "lucide-react";
+import { MessageCircle, Receipt, MapPin, Users, Car, BarChart2, LogOut } from "lucide-react";
 import { AnimatedBackground } from "@/components/ui/animated-background";
 import { PoolNavbar } from "@/components/poolNavbar";
 import { ChatWindow } from "@/components/chat/ChatWindow";
@@ -101,22 +101,6 @@ export default function GroupsPage() {
 
             const matchesPassenger = Array.isArray(pool.passengers)
                 ? pool.passengers.some((passenger) => {
-                    // passenger is from Pool['passengers'] which has { id, fullName, avatar, phone, gender }
-                    // It doesn't seem to have status in the interface definition in pool.ts?
-                    // But api.ts BackendPassenger extends BackendUser.
-                    // Let's check pool.ts again.
-                    // pool.ts: passengers?: { id?, fullName, avatar?, phone?, gender? }[]
-                    // It doesn't have status or userId or user object.
-                    // But the runtime object might have it.
-                    // If I want to be type safe I should update Pool interface or use what's there.
-                    // The code checks passenger.status.
-
-                    // If I can't change the interface easily right now, I might need to cast to a more specific type locally
-                    // or just use what's available.
-                    // But the goal is to remove 'any'.
-
-                    // Let's assume for now we use the fields we know exist or add them to Pool interface if needed.
-                    // For now I will use the fields that are on the interface or safely access them.
 
                     return matchesIdentifiers([
                         passenger.id,
@@ -152,12 +136,33 @@ export default function GroupsPage() {
         }
     }, [poolIdFromUrl, myGroups, selectedPool]);
 
+    const handleLeaveGroup = async () => {
+        if (!selectedPool || !currentUser) return;
+
+        if (confirm("Are you sure you want to leave this group?")) {
+            try {
+                await poolApi.leavePool(selectedPool.id);
+                toast({ title: "Success", description: "You have left the group", variant: "default" });
+                setPools(prev => prev.filter(p => p.id !== selectedPool.id));
+                setSelectedPool(null);
+            } catch (error) {
+                console.error("Error leaving group:", error);
+                toast({ title: "Error", description: error instanceof Error ? error.message : "Failed to leave group", variant: "destructive" });
+            }
+        }
+    };
+
+    const isCreator = selectedPool && currentUser && (
+        selectedPool.creatorId === currentUser.id ||
+        selectedPool.creator?.email === currentUser.email ||
+        selectedPool.created_by?.email === currentUser.email
+    );
+
     return (
         <AnimatedBackground variant="paths" intensity="subtle" className="min-h-screen">
             <PoolNavbar />
             <div className="container mx-auto p-4 h-[calc(100vh-80px)]">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full">
-                    {/* Groups List */}
                     <div className="md:col-span-1 bg-card/50 backdrop-blur-md rounded-lg border border-border flex flex-col overflow-hidden shadow-sm">
                         <div className="p-4 border-b border-border">
                             <h2 className="text-xl font-semibold text-primary">My Groups</h2>
@@ -210,21 +215,32 @@ export default function GroupsPage() {
                         </div>
                     </div>
 
-                    {/* Chat & Expenses Area */}
                     <div className="md:col-span-2 h-full">
                         {selectedPool && currentUser ? (
                             <Tabs defaultValue="chat" className="h-full flex flex-col">
-                                <TabsList className="w-full justify-start bg-card/50 backdrop-blur-md border border-border mb-4">
-                                    <TabsTrigger value="chat" className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                                        <MessageCircle size={16} /> Chat
-                                    </TabsTrigger>
-                                    <TabsTrigger value="expenses" className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                                        <Receipt size={16} /> Expenses
-                                    </TabsTrigger>
-                                    <TabsTrigger value="polls" className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                                        <BarChart2 size={16} /> Polls
-                                    </TabsTrigger>
-                                </TabsList>
+                                <div className="flex justify-between items-center bg-card/50 backdrop-blur-md border border-border mb-4 rounded-lg p-1">
+                                    <TabsList className="bg-transparent border-0">
+                                        <TabsTrigger value="chat" className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                                            <MessageCircle size={16} /> Chat
+                                        </TabsTrigger>
+                                        <TabsTrigger value="expenses" className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                                            <Receipt size={16} /> Expenses
+                                        </TabsTrigger>
+                                        <TabsTrigger value="polls" className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                                            <BarChart2 size={16} /> Polls
+                                        </TabsTrigger>
+                                    </TabsList>
+                                    {!isCreator && (
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            className="text-destructive hover:text-destructive hover:bg-destructive/10 mr-2"
+                                            onClick={handleLeaveGroup}
+                                        >
+                                            <LogOut size={16} className="mr-2" /> Leave Group
+                                        </Button>
+                                    )}
+                                </div>
                                 <TabsContent value="chat" className="flex-1 mt-0">
                                     {selectedPool.group?.id ? (
                                         <ChatWindow groupId={selectedPool.group.id} currentUser={currentUser} />
@@ -247,12 +263,7 @@ export default function GroupsPage() {
                                             members={(selectedPool.passengers || selectedPool.members || []).map(m => {
                                                 const fullName = 'fullName' in m ? m.fullName : m.full_name;
                                                 const email = 'email' in m ? m.email : undefined;
-                                                // PoolMembers has email optional, passengers has email optional (added in my api.ts fix but maybe not in pool.ts interface?)
-                                                // Let's check pool.ts interface for passengers.
-                                                // passengers?: { id?, fullName, avatar?, phone?, gender? }[]
-                                                // It doesn't have email.
-                                                // But I can cast or check.
-                                                // For now let's just use what we have.
+
 
                                                 return {
                                                     id: m.id || "unknown",

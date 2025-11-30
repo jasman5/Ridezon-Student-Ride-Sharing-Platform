@@ -10,7 +10,7 @@ export const projectConfig = {
 	projectEmail: "support@ridezon.com",
 	projectTwitter: "@ridezon",
 	projectGithub: "https://github.com/ridezon",
-	projectSrc: "https://github.com/ridezon/ridezon",
+	projectSrc: "https://github.com/akshatnathani/ridezon",
 	team: [
 		{
 			name: "Harsh Puri",

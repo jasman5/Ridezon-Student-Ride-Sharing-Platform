@@ -302,7 +302,7 @@ export default function LandingPage() {
 							>
 								<div className="relative rounded-xl overflow-hidden border border-border bg-gradient-to-bl from-primary/5 to-background aspect-[4/3] flex items-center justify-center shadow-lg">
 									<Image 
-										src="/placeholder.jpg" 
+										src="/ridezon.jpg" 
 										alt="About Ridezon" 
 										fill 
 										className="object-cover"

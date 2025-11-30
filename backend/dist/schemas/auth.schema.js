@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.googleLoginSchema = exports.loginSchema = exports.signupSchema = void 0;
+exports.completeSignupSchema = exports.logoutSchema = exports.googleLoginSchema = exports.loginSchema = exports.signupSchema = void 0;
 const zod_1 = require("zod");
 exports.signupSchema = zod_1.z.object({
     body: zod_1.z.object({
@@ -19,6 +19,17 @@ exports.loginSchema = zod_1.z.object({
 });
 exports.googleLoginSchema = zod_1.z.object({
     body: zod_1.z.object({
-        token: zod_1.z.string().min(1, "Token is required"),
+        access_token: zod_1.z.string().min(1, "Token is required"),
+    }),
+});
+exports.logoutSchema = zod_1.z.object({
+    body: zod_1.z.object({
+        refresh_token: zod_1.z.string().min(1, "Refresh token is required"),
+    }),
+});
+exports.completeSignupSchema = zod_1.z.object({
+    body: zod_1.z.object({
+        phone_number: zod_1.z.string().min(10, "Phone number must be at least 10 digits"),
+        gender: zod_1.z.enum(["Male", "Female", "Others"]),
     }),
 });
