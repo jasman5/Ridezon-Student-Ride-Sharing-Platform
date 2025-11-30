@@ -65,9 +65,30 @@ export function PoolCard({ pool, onClick, currentUser }: Readonly<PoolCardProps>
 
 	// Get members
 	const members = pool.members ?? [];
+	const memberCount = Array.isArray(members) ? members.length : 0;
 
-	// Calculate available seats
-	const availableSeats = totalPersons - currentPersons;
+	// Determine occupied seats preferring backend count, otherwise fall back to
+	// the union of members and passengers arrays to capture recently joined riders.
+	const passengersArray = Array.isArray((pool as any).passengers)
+		? (pool as any).passengers
+		: [];
+
+	const uniqueParticipantIds = new Set<string>();
+
+	[members, passengersArray].forEach((list) => {
+		list?.forEach((entry: any) => {
+			const identifier = (entry?.id ?? entry?.userId ?? entry?.user?.id ?? entry?.email ?? entry?.full_name ?? entry).toString();
+			if (identifier) {
+				uniqueParticipantIds.add(identifier.toLowerCase());
+			}
+		});
+	});
+
+	const fallbackOccupied = Math.max(uniqueParticipantIds.size, memberCount);
+	const occupiedSeats = currentPersons > 0 ? currentPersons : fallbackOccupied;
+
+	// Calculate available seats ensuring we never dip below zero.
+	const availableSeats = Math.max(totalPersons - occupiedSeats, 0);
 
 	// Handle mouse move for 3D effect
 	const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -314,7 +335,7 @@ export function PoolCard({ pool, onClick, currentUser }: Readonly<PoolCardProps>
 									className="text-primary mb-1"
 								/>
 								<span className="text-xs font-medium">
-									{currentPersons}/{totalPersons}
+									{occupiedSeats}/{totalPersons}
 								</span>
 								<span className="text-[10px] text-foreground/60">
 									Seats
@@ -414,7 +435,7 @@ export function PoolCard({ pool, onClick, currentUser }: Readonly<PoolCardProps>
 											<div className="pt-2 space-y-2 max-h-32 overflow-y-auto">
 												{members.map((member, index) => (
 													<motion.div
-														key={index}
+														key={member.id ?? index}
 														initial={{ x: -20, opacity: 0 }}
 														animate={{ x: 0, opacity: 1 }}
 														transition={{ delay: index * 0.1 }}

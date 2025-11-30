@@ -21,7 +21,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { AnimatedButton } from "@/components/ui/animated-button";
 import { Badge } from "@/components/ui/badge";
 import type { Pool } from "@/types/pool";
 import { formatTime, formatDate } from "@/lib/utils/date-utils";
@@ -88,11 +87,65 @@ export function PoolDetails({
 	const creatorGender = pool.created_by?.gender ?? "";
 
 	// Check if current user is a member
-	const isMember = pool.members?.some(
-		(member) =>
-			member.full_name === currentUser?.full_name ||
-			(pool.created_by?.email === currentUser?.email && member.is_creator)
+	const normalize = (value?: string | number | null) =>
+		value?.toString().trim().toLowerCase() ?? "";
+
+	const userIdentifiers = new Set<string>(
+		[
+			currentUser?.id,
+			currentUser?.email,
+			currentUser?.full_name,
+			currentUser?.phone_number,
+		]
+			.map(normalize)
+			.filter((identifier) => identifier.length > 0),
 	);
+
+	const matchesIdentifiers = (
+		candidates: Array<string | number | undefined | null>,
+	): boolean =>
+		candidates
+			.map((candidate) => normalize(candidate))
+			.some(
+				(normalizedCandidate) =>
+					normalizedCandidate.length > 0 &&
+					userIdentifiers.has(normalizedCandidate),
+			);
+
+	const matchesMember = pool.members?.some((member) =>
+		matchesIdentifiers([
+			member.id,
+			member.email,
+			member.full_name,
+			member.phone_number,
+		]),
+	);
+
+	const matchesPassenger = Array.isArray((pool as any).passengers)
+		? (pool as any).passengers.some((passenger: any) =>
+			matchesIdentifiers([
+				passenger?.id,
+				passenger?.userId,
+				passenger?.email,
+				passenger?.fullName,
+				passenger?.phone,
+				passenger?.user?.id,
+				passenger?.user?.email,
+				passenger?.user?.fullName,
+			]),
+		)
+		: false;
+
+	const matchesAcceptedRequest = pool.requests?.some((request) =>
+		request.status === "ACCEPTED" &&
+		matchesIdentifiers([
+			request.userId,
+			request.user?.email,
+			request.user?.fullName,
+		]),
+	);
+
+	const isMember = Boolean(matchesMember || matchesPassenger || matchesAcceptedRequest);
 
 	const handleJoinPool = async () => {
 		if (!pool) return;
@@ -415,7 +468,7 @@ export function PoolDetails({
 
 						</motion.div>
 
-						<div className="flex justify-end gap-2 mt-4">
+						<div className="sticky bottom-0 left-0 right-0 mt-6 space-y-2 rounded-b-md border-t border-white/10 bg-background/90 p-4 backdrop-blur">
 							{isEditing ? (
 								<EditPoolForm
 									pool={pool}
@@ -431,7 +484,7 @@ export function PoolDetails({
 										<Button
 											variant="secondary"
 											onClick={() => router.push(`/groups?poolId=${pool.id}`)}
-											className="flex items-center gap-1"
+											className="flex w-full items-center justify-center gap-1"
 										>
 											<MessageCircle size={16} />
 											Go to Group
@@ -443,7 +496,7 @@ export function PoolDetails({
 											<Button
 												variant="destructive"
 												onClick={handleDeletePool}
-												className="flex items-center gap-1"
+												className="flex w-full items-center justify-center gap-1"
 												disabled={isDeleting}
 											>
 												{isDeleting ? (
@@ -458,7 +511,7 @@ export function PoolDetails({
 											<Button
 												variant="outline"
 												onClick={() => setIsEditing(true)}
-												className="border-white/20 dark:border-white/10 flex items-center gap-1"
+												className="border-white/20 dark:border-white/10 flex w-full items-center justify-center gap-1"
 											>
 												<Edit size={16} />
 												Edit
@@ -467,18 +520,17 @@ export function PoolDetails({
 									)}
 
 									{!isCurrentUserCreator && !isMember && (
-										<AnimatedButton
-											className="bg-primary hover:bg-primary/90"
-											glowColor="rgba(255, 0, 0, 0.3)"
+										<Button
 											onClick={handleJoinPool}
 											disabled={isJoining}
+											className="w-full bg-primary hover:bg-primary/90"
 										>
 											{isJoining ? (
 												<div className="h-5 w-5 border-2 border-primary-foreground/50 border-t-transparent rounded-full animate-spin mx-auto" />
 											) : (
 												"Join Pool"
 											)}
-										</AnimatedButton>
+										</Button>
 									)}
 								</>
 							)}

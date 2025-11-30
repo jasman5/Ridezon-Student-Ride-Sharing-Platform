@@ -43,30 +43,7 @@ export function AppHeader({ onCreatePool }: AppHeaderProps) {
 			transition={{ duration: 0.5 }}
 		>
 			<div className="container mx-auto flex justify-between items-center p-4">
-				<Link
-					href="/pools"
-					className="flex items-center gap-2"
-				>
-					<motion.div
-						initial={{ rotate: -10 }}
-						animate={{ rotate: 10 }}
-						transition={{
-							repeat: Number.POSITIVE_INFINITY,
-							repeatType: "reverse",
-							duration: 1.5,
-						}}
-					>
-						<Car className="h-6 w-6 text-primary" />
-					</motion.div>
-					<motion.span
-						className="text-2xl font-bold text-primary"
-						initial={{ opacity: 0, x: -20 }}
-						animate={{ opacity: 1, x: 0 }}
-						transition={{ delay: 0.2, duration: 0.5 }}
-					>
-						Ridezon
-					</motion.span>
-				</Link>
+				<div />
 
 				{/* Desktop Navigation */}
 				<div className="hidden md:flex items-center gap-4">

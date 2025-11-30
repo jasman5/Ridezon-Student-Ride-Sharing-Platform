@@ -79,13 +79,6 @@ export function LandingNavbar() {
 			href={isAuthenticated ? "/pools" : "/"}
 			className="flex items-center justify-center"
 		>
-			<Image
-				src={logoSrc || "/placeholder.svg"}
-				alt="Ridezon Logo"
-				width={110}
-				height={110}
-				priority
-			/>
 		</Link>
 	);
 
@@ -93,12 +86,6 @@ export function LandingNavbar() {
 		{ href: "features", label: "Features" },
 		{ href: "about", label: "About" },
 		{ href: "faq", label: "FAQ" },
-		{
-			href: projectConfig.projectSrc,
-			label: "GitHub",
-			icon: <Github size={16} />,
-			isExternal: true,
-		},
 	];
 
 	return (
@@ -108,7 +95,7 @@ export function LandingNavbar() {
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ duration: 0.5 }}
 		>
-			<div className="container mx-auto flex justify-between items-center p-4 py-0">
+			<div className="container mx-auto flex justify-between items-center p-4 py-6">
 				<Logo />
 
 				{/* Desktop Nav */}

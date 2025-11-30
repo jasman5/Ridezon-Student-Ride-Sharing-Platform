@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 import { useRouter } from "next/navigation";
@@ -300,7 +301,12 @@ export default function LandingPage() {
 								transition={{ duration: 0.6 }}
 							>
 								<div className="relative rounded-xl overflow-hidden border border-border bg-gradient-to-bl from-primary/5 to-background aspect-[4/3] flex items-center justify-center shadow-lg">
-									<Users className="w-20 h-20 text-primary/60" />
+									<Image 
+										src="/placeholder.jpg" 
+										alt="About Ridezon" 
+										fill 
+										className="object-cover"
+									/>
 								</div>
 							</motion.div>
 						</div>

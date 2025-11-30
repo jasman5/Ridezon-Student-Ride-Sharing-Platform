@@ -52,12 +52,87 @@ export default function GroupsPage() {
 
     const myGroups = useMemo(() => {
         if (!currentUser) return [];
-        return pools.filter(pool => {
-            const isCreator = (pool.creator?.email === currentUser.email) || (pool.created_by?.email === currentUser.email);
-            const isCreatorById = pool.creatorId === currentUser.id;
-            const isPassenger = pool.passengers?.some(p => p.fullName === currentUser.full_name);
 
-            return isCreator || isCreatorById || isPassenger;
+        const normalize = (value?: string | number | null) =>
+            value?.toString().trim().toLowerCase() ?? "";
+
+        const userIdentifiers = new Set<string>([
+            currentUser.id,
+            currentUser.email,
+            currentUser.full_name,
+            currentUser.phone_number,
+        ]
+            .map(normalize)
+            .filter((identifier) => identifier.length > 0));
+
+        const matchesIdentifiers = (
+            candidates: Array<string | number | undefined | null>,
+        ) =>
+            candidates
+                .map((candidate) => normalize(candidate))
+                .some(
+                    (normalizedCandidate) =>
+                        normalizedCandidate.length > 0 &&
+                        userIdentifiers.has(normalizedCandidate),
+                );
+
+        return pools.filter((pool) => {
+            const isCreator = matchesIdentifiers([
+                pool.creator?.id,
+                (pool.creator as any)?.userId,
+                pool.creator?.email,
+                (pool.creator as any)?.fullName,
+                pool.created_by?.email,
+                pool.created_by?.full_name,
+                pool.creatorId,
+            ]);
+
+            if (isCreator) {
+                return true;
+            }
+
+            const matchesMember = pool.members?.some((member) =>
+                matchesIdentifiers([
+                    member.id,
+                    (member as any).userId,
+                    member.email,
+                    member.full_name,
+                    member.phone_number,
+                ]),
+            );
+
+            const matchesPassenger = Array.isArray(pool.passengers)
+                ? pool.passengers.some((passenger: any) => {
+                    if (
+                        typeof passenger?.status === "string" &&
+                        passenger.status.toUpperCase() !== "ACCEPTED"
+                    ) {
+                        return false;
+                    }
+
+                    return matchesIdentifiers([
+                        passenger?.id,
+                        passenger?.userId,
+                        passenger?.email,
+                        passenger?.fullName,
+                        passenger?.phone,
+                        passenger?.user?.id,
+                        passenger?.user?.email,
+                        passenger?.user?.fullName,
+                    ]);
+                })
+                : false;
+
+            const matchesAcceptedRequest = pool.requests?.some((request) =>
+                request.status === "ACCEPTED" &&
+                matchesIdentifiers([
+                    request.userId,
+                    request.user?.email,
+                    request.user?.fullName,
+                ]),
+            );
+
+            return matchesMember || matchesPassenger || matchesAcceptedRequest;
         });
     }, [pools, currentUser]);
 

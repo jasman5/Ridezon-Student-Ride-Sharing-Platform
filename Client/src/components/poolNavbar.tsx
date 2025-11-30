@@ -72,13 +72,6 @@ export function PoolNavbar({ onCreatePool }: Readonly<NavbarProps>) {
 				href={isAuthenticated ? "/pools" : "/"}
 				className="flex items-center justify-center"
 			>
-				<Image
-					src={logoSrc}
-					alt="ThaparGoLogo"
-					width={110}
-					height={110}
-					priority
-				/>
 			</Link>
 		);
 	};

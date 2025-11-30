@@ -80,6 +80,8 @@ const mapRideToPool = (ride: any): Pool => {
 			email: ride.creator.email || "",
 		} : undefined,
 		members: ride.passengers ? ride.passengers.map((p: any) => ({
+			id: p.id,
+			email: p.email || "",
 			full_name: p.fullName,
 			phone_number: p.phone || "",
 			gender: p.gender || "Others",

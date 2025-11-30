@@ -146,25 +146,63 @@ export default function PoolDashboard() {
 	const joinedPools = useMemo(() => {
 		if (!currentUser) return [];
 
+		const normalize = (value?: string | number | null) =>
+			value?.toString().trim().toLowerCase() ?? "";
+
 		return pools.filter((pool: Pool) => {
-			// Check if the current user exists in the members array
-			const isMember = pool.members?.some(
-				(member: PoolMembers) =>
-					// Compare by full_name or email if available
-					member.full_name === currentUser.full_name ||
-					// Also check if the pool creator matches (in case they're also a member)
-					(pool.created_by?.email === currentUser.email &&
-						member.is_creator),
-			);
+			const normalizedUserName = normalize(currentUser.full_name);
+			const normalizedUserPhone = normalize(currentUser.phone_number);
+			const normalizedUserId = normalize(currentUser.id);
+			const normalizedUserEmail = normalize(currentUser.email);
 
-			// Check if the current user has a pending request
-			const hasPendingRequest = pool.requests?.some(
-				(request) =>
-					request.status === "PENDING" &&
-					(request.user?.email === currentUser.email || request.userId === currentUser.id)
-			);
+			const matchesMember = pool.members?.some((member: PoolMembers) => {
+				const createIdCandidates = [
+					member.id,
+					member.email,
+					member.full_name,
+					member.phone_number,
+				];
 
-			return isMember && pool.created_by?.email !== currentUser.email;
+				return createIdCandidates.some((candidate) => {
+					const normalizedCandidate = normalize(candidate);
+					return (
+						normalizedCandidate === normalizedUserId ||
+						normalizedCandidate === normalizedUserEmail ||
+						normalizedCandidate === normalizedUserName ||
+						normalizedCandidate === normalizedUserPhone
+					);
+				});
+			});
+
+			const matchesPassenger = Array.isArray((pool as any).passengers)
+				? (pool as any).passengers.some((passenger: any) => {
+					const candidates = [
+						passenger?.id,
+						passenger?.email,
+						passenger?.fullName,
+						passenger?.phone,
+						passenger?.userId,
+						passenger?.user?.id,
+						passenger?.user?.email,
+					];
+
+					return candidates.some((candidate) => {
+						const normalizedCandidate = normalize(candidate);
+						return (
+							normalizedCandidate === normalizedUserId ||
+							normalizedCandidate === normalizedUserEmail ||
+							normalizedCandidate === normalizedUserName ||
+							normalizedCandidate === normalizedUserPhone
+						);
+					});
+				})
+				: false;
+
+			const isCreator =
+				normalize(pool.created_by?.email) === normalizedUserEmail ||
+				normalize((pool as any).creator?.email) === normalizedUserEmail;
+
+			return !isCreator && (matchesMember || matchesPassenger);
 		});
 	}, [pools, currentUser]);
 

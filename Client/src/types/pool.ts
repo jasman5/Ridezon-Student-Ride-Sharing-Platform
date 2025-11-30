@@ -1,11 +1,13 @@
 // Define the pool type
 
 export interface PoolMembers {
+	id?: string;
 	full_name: string;
-	phone_number: number;
+	phone_number: string | number;
 	gender: "Male" | "Female" | "Others";
 	is_creator: boolean;
 	pool: number;
+	email?: string;
 }
 
 export interface Pool {
