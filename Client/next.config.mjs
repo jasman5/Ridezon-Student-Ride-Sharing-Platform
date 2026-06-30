@@ -14,6 +14,7 @@ const nextConfig = {
 		parallelServerBuildTraces: true,
 		parallelServerCompiles: true,
 	},
+	reactStrictMode: false,
 };
 
 export default nextConfig;
