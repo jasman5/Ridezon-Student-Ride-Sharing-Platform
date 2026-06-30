@@ -3,6 +3,7 @@ Ridezon is a campus-focused ride-sharing platform designed exclusively for stude
 
 ## Project Overview
 Ridezon simplifies ride coordination within college campuses by allowing students to create rides, join groups, and communicate securely. The platform focuses on improving convenience, reducing costs, and promoting shared travel among students.
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/fe50e4d0-96ea-4a37-a06d-d45f0dda6d8c" />
 
 ## Features
 - Create and join ride groups
